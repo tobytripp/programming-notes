@@ -1,0 +1,1422 @@
+#+TITLE: Code Alchemy
+#+AUTHOR: Toby Tripp
+#+OPTIONS: H:3 num:nil toc:nil
+#+OPTIONS: html-style:t html5-fancy:t
+#+HTML_HEAD_EXTRA: <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+#+HTML_HEAD_EXTRA: <link rel="stylesheet" href="css/style.css">
+#+HTML_CONTAINER: div
+#+HTML_DOCTYPE: html5
+
+# Export to HTML with:
+#   C-c C-e h h     (org-html-export-to-html)
+# Tangle with C-c C-x v t   (org-babel-tangle)
+#   or with F6
+
+* Skyrim Potion Mixing
+
+** Prolog
+
+   A general-purpose logic programming language developed in 1972.
+
+   Abbreviation of "Programming with Logic"
+
+      - implication =:-=
+      - conjunction ,
+      - disjunction =;=
+      - variable    =Var=
+      - atom        =var=
+      - number      =2=
+
+*** Atoms
+
+    #+BEGIN_SRC prolog
+      1.                              % numbers
+      atom.                           % simple
+      'an atom'.                      % quoted
+    #+END_SRC
+
+*** Variables
+    Begin with an Upper-case letter.
+    #+BEGIN_SRC prolog
+      X.
+      X1.
+      C_3.
+    #+END_SRC
+
+*** Facts
+    Facts can be considered to be Rules with no Body, i.e., a Rule
+    whose antecedent conditions are empty and therefore always true.
+
+    #+BEGIN_SRC prolog
+      cat( sylvester ) :- true.    % also called a `complex term`
+      cat( tom ).                  % synonymous with above
+
+      dog( bill ).
+      mouse( jerry ).
+    #+END_SRC
+
+
+*** Rules
+
+    #+BEGIN_SRC prolog
+      animal( X ) :- cat( X ).     % Given X is a cat,
+                                   % X is an animal.
+    #+END_SRC
+
+*** Terms may be recursive
+
+    Does this /unify/?
+
+    #+BEGIN_SRC prolog
+      % `=` is Prolog's unification operator.
+      father(X)  =  X.
+    #+END_SRC
+
+    #+ATTR_REVEAL: :frag roll-in
+    Yes, it does.
+
+    #+ATTR_REVEAL: :frag roll-in
+    To what?
+
+    #+ATTR_REVEAL: :frag roll-in
+    …it depends. The expression is defined to be unifiable, but its
+    display is implementation-dependent. [fn:2]
+
+
+    What is displayed will vary based on the prolog implementation, but
+    any of them will allow the query to unify.
+
+    SWI-Prolog will answer
+
+    #+BEGIN_SRC prolog :tangle no
+      X = father(X).
+    #+END_SRC
+
+    gprolog will refuse to output the unification, but will still
+    return `yes`, indicating that the expression unified.
+
+    Other implementations may try to display it as something like:
+
+    #+BEGIN_SRC prolog :tangle no
+       X  =  father(father(father(father(...))))))))
+    #+END_SRC
+
+*** Queries
+
+    #+BEGIN_SRC prolog
+      ?- cat( X ).
+      X = sylvester
+      X = tom
+    #+END_SRC
+
+*** Lists
+
+    #+BEGIN_SRC prolog
+    [1, 2, a].
+    [1, a( 1, 2 ), 3].
+    [A, b, c].
+
+    | ?- [1,2,3] = [A|Tail].
+    A = 1
+    Tail = [2,3]
+
+    | ?- [1,2,3] = [A|[B|Tail]].
+
+    A = 1
+    B = 2
+    Tail = [3]
+    #+END_SRC
+
+*** Append
+    Let's consider a definition of Prolog's append/3: [fn:2]
+    #+BEGIN_SRC prolog
+      append( [], L, L ).
+      append( [H|T], L2, [H|L3] ) :- append( T, L2, L3 ).
+    #+END_SRC
+
+    Demonstrates the Head|Tail list deconstruction.
+
+    Read as:
+      appending the empty list to any list L results in the list L.
+
+      when we append a non-empty list [H|T] with a list L2, we get
+      the list whose head is H and
+      whose tail is the result of appending T with L2 .
+
+
+*** Using Append
+
+    Because of the nature of logical programming, append/3
+    can be used to /break-up/ lists:
+    #+BEGIN_SRC prolog
+      append( X, Y, [a,b,c,d] ).
+
+      X  =  []
+      Y  =  [a,b,c,d]
+
+      X  =  [a]
+      Y  =  [b,c,d]
+
+      X  =  [a,b]
+      Y  =  [c,d]
+
+      X  =  [a,b,c]
+      Y  =  [d]
+
+      X  =  [a,b,c,d]
+      Y  =  []
+    #+END_SRC
+
+    Goals in a logic language can be run /backward/.
+
+*** Permutation
+
+    #+BEGIN_SRC prolog
+      permutation( [1,2,3], L ).
+
+      L = [1,2,3]
+      L = [1,3,2]
+      L = [2,1,3]
+      L = [2,3,1]
+      L = [3,1,2]
+      L = [3,2,1]
+
+      permutation( [1, A, 3], [3, 2, 1] ).
+
+      A = 2
+    #+END_SRC
+
+    /Permutation/, in Prolog, can be defined in terms of /append/.
+
+
+*** Alchemy Facts: mapping ingredients to effects:
+
+   #+BEGIN_SRC prolog :tangle src/alchemy.pl
+     % -*- mode: prolog -*-
+     effect( abecean_longfin, fortify_restoration ).
+     effect( abecean_longfin, fortify_sneak ).
+     effect( abecean_longfin, weakness_to_frost ).
+     effect( abecean_longfin, weakness_to_poison ).
+
+     effect( ancestor_moth_wing, damage_magicka_regen ).
+     effect( ancestor_moth_wing, damage_stamina ).
+     effect( ancestor_moth_wing, fortify_conjuration ).
+     effect( ancestor_moth_wing, fortify_enchanting ).
+
+     effect( bear_claws, damage_magicka_regen ).
+     effect( bear_claws, fortify_health ).
+     effect( bear_claws, fortify_one_handed ).
+     effect( bear_claws, restore_stamina ).
+
+     effect( bee, ravage_stamina ).
+     effect( bee, regenerate_stamina ).
+     effect( bee, restore_stamina ).
+     effect( bee, weakness_to_shock ).
+   #+END_SRC
+
+   and so on for all available ingredients.
+
+   #+BEGIN_SRC prolog :tangle src/alchemy.pl :exports none
+     effect( beehive_husk, fortify_destruction ).
+     effect( beehive_husk, fortify_light_armor ).
+     effect( beehive_husk, fortify_sneak ).
+     effect( beehive_husk, resist_poison ).
+
+     effect( bleeding_crown, fortify_block ).
+     effect( bleeding_crown, resist_magic ).
+     effect( bleeding_crown, weakness_to_fire ).
+     effect( bleeding_crown, weakness_to_poison ).
+
+     effect( blisterwort, damage_stamina ).
+     effect( blisterwort, fortify_smithing ).
+     effect( blisterwort, frenzy ).
+     effect( blisterwort, restore_health ).
+
+     effect( blue_butterfly_wing, damage_magicka_regen ).
+     effect( blue_butterfly_wing, damage_stamina ).
+     effect( blue_butterfly_wing, fortify_conjuration ).
+     effect( blue_butterfly_wing, fortify_enchanting ).
+
+     effect( blue_dartwing, fear ).
+     effect( blue_dartwing, fortify_pickpocket ).
+     effect( blue_dartwing, resist_shock ).
+     effect( blue_dartwing, restore_health ).
+
+     effect( blue_mountain_flower, damage_magicka_regen ).
+     effect( blue_mountain_flower, fortify_conjuration ).
+     effect( blue_mountain_flower, fortify_health ).
+     effect( blue_mountain_flower, restore_health ).
+
+     effect( bone_meal, damage_stamina ).
+     effect( bone_meal, fortify_conjuration ).
+     effect( bone_meal, ravage_stamina ).
+     effect( bone_meal, resist_fire ).
+
+     effect( briar_heart, fortify_block ).
+     effect( briar_heart, fortify_magicka ).
+     effect( briar_heart, paralysis ).
+     effect( briar_heart, restore_magicka ).
+
+     effect( butterfly_wing, damage_magicka ).
+     effect( butterfly_wing, fortify_barter ).
+     effect( butterfly_wing, lingering_damage_stamina ).
+     effect( butterfly_wing, restore_health ).
+
+     effect( canis_root, damage_stamina ).
+     effect( canis_root, fortify_marksman ).
+     effect( canis_root, fortify_one_handed ).
+     effect( canis_root, paralysis ).
+
+     effect( charred_skeever_hide, cure_disease ).
+     effect( charred_skeever_hide, resist_poison ).
+     effect( charred_skeever_hide, restore_health ).
+     effect( charred_skeever_hide, restore_stamina ).
+
+     effect( chaurus_eggs, damage_magicka ).
+     effect( chaurus_eggs, fortify_stamina ).
+     effect( chaurus_eggs, invisibility ).
+     effect( chaurus_eggs, weakness_to_poison ).
+
+     effect( chaurus_hunter_antennae, damage_magicka_regen ).
+     effect( chaurus_hunter_antennae, damage_stamina ).
+     effect( chaurus_hunter_antennae, fortify_conjuration ).
+     effect( chaurus_hunter_antennae, fortify_enchanting ).
+
+     effect( chicken_egg, damage_magicka_regen ).
+     effect( chicken_egg, lingering_damage_stamina ).
+     effect( chicken_egg, resist_magic ).
+     effect( chicken_egg, waterbreathing ).
+
+     effect( creep_cluster, damage_stamina_regen ).
+     effect( creep_cluster, fortify_carry_weight ).
+     effect( creep_cluster, restore_magicka ).
+     effect( creep_cluster, weakness_to_magic ).
+
+     effect( crimson_nirnroot, damage_health ).
+     effect( crimson_nirnroot, damage_stamina ).
+     effect( crimson_nirnroot, invisibility ).
+     effect( crimson_nirnroot, resist_magic ).
+
+     effect( cyrodilic_spadetail, damage_stamina ).
+     effect( cyrodilic_spadetail, fear ).
+     effect( cyrodilic_spadetail, fortify_restoration ).
+     effect( cyrodilic_spadetail, ravage_health ).
+
+     effect( daedra_heart, damage_magicka ).
+     effect( daedra_heart, damage_stamina_regen ).
+     effect( daedra_heart, fear ).
+     effect( daedra_heart, restore_health ).
+
+     effect( deathbell, damage_health ).
+     effect( deathbell, ravage_stamina ).
+     effect( deathbell, slow ).
+     effect( deathbell, weakness_to_poison ).
+
+     effect( dragons_tongue, fortify_barter ).
+     effect( dragons_tongue, fortify_illusion ).
+     effect( dragons_tongue, fortify_two_handed ).
+     effect( dragons_tongue, resist_fire ).
+
+     effect( dwarven_oil, fortify_illusion ).
+     effect( dwarven_oil, regenerate_magicka ).
+     effect( dwarven_oil, restore_magicka ).
+     effect( dwarven_oil, weakness_to_magic ).
+
+     effect( ectoplasm, damage_health ).
+     effect( ectoplasm, fortify_destruction ).
+     effect( ectoplasm, fortify_magicka ).
+     effect( ectoplasm, restore_magicka ).
+
+     effect( elves_ear, fortify_marksman ).
+     effect( elves_ear, resist_fire ).
+     effect( elves_ear, restore_magicka ).
+     effect( elves_ear, weakness_to_frost ).
+
+     effect( eye_of_sabre_cat, damage_magicka ).
+     effect( eye_of_sabre_cat, ravage_health ).
+     effect( eye_of_sabre_cat, restore_health ).
+     effect( eye_of_sabre_cat, restore_stamina ).
+
+     effect( falmer_ear, damage_health ).
+     effect( falmer_ear, fortify_lockpicking ).
+     effect( falmer_ear, frenzy ).
+     effect( falmer_ear, resist_poison ).
+
+     effect( fire_salts, regenerate_magicka ).
+     effect( fire_salts, resist_fire ).
+     effect( fire_salts, restore_magicka ).
+     effect( fire_salts, weakness_to_frost ).
+
+     effect( fly_amanita, fortify_two_handed ).
+     effect( fly_amanita, frenzy ).
+     effect( fly_amanita, regenerate_stamina ).
+     effect( fly_amanita, resist_fire ).
+
+     effect( frost_mirriam, damage_stamina_regen ).
+     effect( frost_mirriam, fortify_sneak ).
+     effect( frost_mirriam, ravage_magicka ).
+     effect( frost_mirriam, resist_frost ).
+
+     effect( frost_salts, fortify_conjuration ).
+     effect( frost_salts, resist_frost ).
+     effect( frost_salts, restore_magicka ).
+     effect( frost_salts, weakness_to_fire ).
+
+     effect( garlic, fortify_stamina ).
+     effect( garlic, regenerate_health ).
+     effect( garlic, regenerate_magicka ).
+     effect( garlic, resist_poison ).
+
+     effect( giant_lichen, ravage_health ).
+     effect( giant_lichen, restore_magicka ).
+     effect( giant_lichen, weakness_to_poison ).
+     effect( giant_lichen, weakness_to_shock ).
+
+     effect( giants_toe, damage_stamina ).
+     effect( giants_toe, damage_stamina_regen ).
+     effect( giants_toe, fortify_carry_weight ).
+     effect( giants_toe, fortify_health ).
+
+     effect( gleamblossom, fear ).
+     effect( gleamblossom, paralysis ).
+     effect( gleamblossom, regenerate_health ).
+     effect( gleamblossom, resist_magic ).
+
+     effect( glow_dust, damage_magicka ).
+     effect( glow_dust, damage_magicka_regen ).
+     effect( glow_dust, fortify_destruction ).
+     effect( glow_dust, resist_shock ).
+
+     effect( glowing_mushroom, fortify_destruction ).
+     effect( glowing_mushroom, fortify_health ).
+     effect( glowing_mushroom, fortify_smithing ).
+     effect( glowing_mushroom, resist_shock ).
+
+     effect( grass_pod, fortify_alteration ).
+     effect( grass_pod, ravage_magicka ).
+     effect( grass_pod, resist_poison ).
+     effect( grass_pod, restore_magicka ).
+
+     effect( hagraven_claw, fortify_barter ).
+     effect( hagraven_claw, fortify_enchanting ).
+     effect( hagraven_claw, lingering_damage_magicka ).
+     effect( hagraven_claw, resist_magic ).
+
+     effect( hagraven_feathers, damage_magicka ).
+     effect( hagraven_feathers, fortify_conjuration ).
+     effect( hagraven_feathers, frenzy ).
+     effect( hagraven_feathers, weakness_to_shock ).
+
+     effect( hanging_moss, damage_magicka ).
+     effect( hanging_moss, damage_magicka_regen ).
+     effect( hanging_moss, fortify_health ).
+     effect( hanging_moss, fortify_one_handed ).
+
+     effect( hawks_egg, resist_magic ).
+     effect( hawks_egg, damage_magicka_regen ).
+     effect( hawks_egg, waterbreathing ).
+     effect( hawks_egg, lingering_damage_stamina ).
+
+     effect( hawk_beak, fortify_carry_weight ).
+     effect( hawk_beak, resist_frost ).
+     effect( hawk_beak, resist_shock ).
+     effect( hawk_beak, restore_stamina ).
+
+     effect( hawk_feathers, cure_disease ).
+     effect( hawk_feathers, fortify_light_armor ).
+     effect( hawk_feathers, fortify_one_handed ).
+     effect( hawk_feathers, fortify_sneak ).
+
+     effect( histcarp, damage_stamina_regen ).
+     effect( histcarp, fortify_magicka ).
+     effect( histcarp, restore_stamina ).
+     effect( histcarp, waterbreathing ).
+
+     effect( honeycomb, fortify_block ).
+     effect( honeycomb, fortify_light_armor ).
+     effect( honeycomb, ravage_stamina ).
+     effect( honeycomb, restore_stamina ).
+
+     effect( human_flesh, damage_health ).
+     effect( human_flesh, fortify_sneak ).
+     effect( human_flesh, paralysis ).
+     effect( human_flesh, restore_magicka ).
+
+     effect( human_heart, damage_health ).
+     effect( human_heart, damage_magicka ).
+     effect( human_heart, damage_magicka_regen ).
+     effect( human_heart, frenzy ).
+
+     effect( ice_wraith_teeth, fortify_heavy_armor ).
+     effect( ice_wraith_teeth, invisibility ).
+     effect( ice_wraith_teeth, weakness_to_fire ).
+     effect( ice_wraith_teeth, weakness_to_frost ).
+
+     effect( imp_stool, damage_health ).
+     effect( imp_stool, lingering_damage_health ).
+     effect( imp_stool, paralysis ).
+     effect( imp_stool, restore_health ).
+
+     effect( jasbay_grapes, fortify_magicka ).
+     effect( jasbay_grapes, ravage_health ).
+     effect( jasbay_grapes, regenerate_magicka ).
+     effect( jasbay_grapes, weakness_to_magic ).
+
+     effect( juniper_berries, damage_stamina_regen ).
+     effect( juniper_berries, fortify_marksman ).
+     effect( juniper_berries, regenerate_health ).
+     effect( juniper_berries, weakness_to_fire ).
+
+     effect( large_antlers, damage_stamina_regen ).
+     effect( large_antlers, fortify_stamina ).
+     effect( large_antlers, restore_stamina ).
+     effect( large_antlers, slow ).
+
+     effect( lavender, fortify_conjuration ).
+     effect( lavender, fortify_stamina ).
+     effect( lavender, ravage_magicka ).
+     effect( lavender, resist_magic ).
+
+     effect( luna_moth_wing, damage_magicka ).
+     effect( luna_moth_wing, fortify_light_armor ).
+     effect( luna_moth_wing, invisibility ).
+     effect( luna_moth_wing, regenerate_health ).
+
+     effect( moon_sugar, regenerate_magicka ).
+     effect( moon_sugar, resist_frost ).
+     effect( moon_sugar, restore_magicka ).
+     effect( moon_sugar, weakness_to_fire ).
+
+     effect( mora_tapinella, fortify_illusion ).
+     effect( mora_tapinella, lingering_damage_health ).
+     effect( mora_tapinella, regenerate_stamina ).
+     effect( mora_tapinella, restore_magicka ).
+
+     effect( mudcrab_chitin, cure_disease ).
+     effect( mudcrab_chitin, resist_fire ).
+     effect( mudcrab_chitin, resist_poison ).
+     effect( mudcrab_chitin, restore_stamina ).
+
+     effect( namiras_rot, damage_magicka ).
+     effect( namiras_rot, fear ).
+     effect( namiras_rot, fortify_lockpicking ).
+     effect( namiras_rot, regenerate_health ).
+
+     effect( nightshade, damage_health ).
+     effect( nightshade, damage_magicka_regen ).
+     effect( nightshade, fortify_destruction ).
+     effect( nightshade, lingering_damage_stamina ).
+
+     effect( nirnroot, damage_health ).
+     effect( nirnroot, damage_stamina ).
+     effect( nirnroot, invisibility ).
+     effect( nirnroot, resist_magic ).
+
+     effect( nordic_barnacle, damage_magicka ).
+     effect( nordic_barnacle, fortify_pickpocket ).
+     effect( nordic_barnacle, regenerate_health ).
+     effect( nordic_barnacle, waterbreathing ).
+
+     effect( orange_dartwing, fortify_pickpocket ).
+     effect( orange_dartwing, lingering_damage_health ).
+     effect( orange_dartwing, ravage_magicka ).
+     effect( orange_dartwing, restore_stamina ).
+
+     effect( pearl, fortify_block ).
+     effect( pearl, resist_shock ).
+     effect( pearl, restore_magicka ).
+     effect( pearl, restore_stamina ).
+
+     effect( pine_thrush_egg, fortify_lockpicking ).
+     effect( pine_thrush_egg, resist_shock ).
+     effect( pine_thrush_egg, restore_stamina ).
+     effect( pine_thrush_egg, weakness_to_poison ).
+
+     effect( poison_bloom, damage_health ).
+     effect( poison_bloom, fear ).
+     effect( poison_bloom, fortify_carry_weight ).
+     effect( poison_bloom, slow ).
+
+     effect( powdered_mammoth_tusk, fear ).
+     effect( powdered_mammoth_tusk, fortify_sneak ).
+     effect( powdered_mammoth_tusk, restore_stamina ).
+     effect( powdered_mammoth_tusk, weakness_to_fire ).
+
+     effect( purple_mountain_flower, fortify_sneak ).
+     effect( purple_mountain_flower, lingering_damage_magicka ).
+     effect( purple_mountain_flower, resist_frost ).
+     effect( purple_mountain_flower, restore_stamina ).
+
+     effect( red_mountain_flower, damage_health ).
+     effect( red_mountain_flower, fortify_magicka ).
+     effect( red_mountain_flower, ravage_magicka ).
+     effect( red_mountain_flower, restore_magicka ).
+
+     effect( river_betty, damage_health ).
+     effect( river_betty, fortify_alteration ).
+     effect( river_betty, fortify_carry_weight ).
+     effect( river_betty, slow ).
+
+     effect( rock_warbler_egg, damage_stamina ).
+     effect( rock_warbler_egg, fortify_one_handed ).
+     effect( rock_warbler_egg, restore_health ).
+     effect( rock_warbler_egg, weakness_to_magic ).
+
+     effect( sabre_cat_tooth, fortify_heavy_armor ).
+     effect( sabre_cat_tooth, fortify_smithing ).
+     effect( sabre_cat_tooth, restore_stamina ).
+     effect( sabre_cat_tooth, weakness_to_poison ).
+
+     effect( salmon_roe, restore_stamina ).
+     effect( salmon_roe, waterbreathing ).
+     effect( salmon_roe, fortify_magicka ).
+     effect( salmon_roe, regenerate_magicka ).
+
+     effect( salt_pile, fortify_restoration ).
+     effect( salt_pile, regenerate_magicka ).
+     effect( salt_pile, slow ).
+     effect( salt_pile, weakness_to_magic ).
+
+     effect( scaly_pholiota, fortify_carry_weight ).
+     effect( scaly_pholiota, fortify_illusion ).
+     effect( scaly_pholiota, regenerate_stamina ).
+     effect( scaly_pholiota, weakness_to_magic ).
+
+     effect( silverside_perch, damage_stamina_regen ).
+     effect( silverside_perch, ravage_health ).
+     effect( silverside_perch, resist_frost ).
+     effect( silverside_perch, restore_stamina ).
+
+     effect( skeever_tail, damage_health ).
+     effect( skeever_tail, damage_stamina_regen ).
+     effect( skeever_tail, fortify_light_armor ).
+     effect( skeever_tail, ravage_health ).
+
+     effect( slaughterfish_egg, fortify_pickpocket ).
+     effect( slaughterfish_egg, fortify_stamina ).
+     effect( slaughterfish_egg, lingering_damage_magicka ).
+     effect( slaughterfish_egg, resist_poison ).
+
+     effect( slaughterfish_scales, fortify_block ).
+     effect( slaughterfish_scales, fortify_heavy_armor ).
+     effect( slaughterfish_scales, lingering_damage_health ).
+     effect( slaughterfish_scales, resist_frost ).
+
+     effect( small_antlers, damage_health ).
+     effect( small_antlers, fortify_restoration ).
+     effect( small_antlers, lingering_damage_stamina ).
+     effect( small_antlers, weakness_to_poison ).
+
+     effect( small_pearl, fortify_one_handed ).
+     effect( small_pearl, fortify_restoration ).
+     effect( small_pearl, resist_frost ).
+     effect( small_pearl, restore_stamina ).
+
+     effect( snowberries, fortify_enchanting ).
+     effect( snowberries, resist_fire ).
+     effect( snowberries, resist_frost ).
+     effect( snowberries, resist_shock ).
+
+     effect( spider_egg, damage_magicka_regen ).
+     effect( spider_egg, damage_stamina ).
+     effect( spider_egg, fortify_lockpicking ).
+     effect( spider_egg, fortify_marksman ).
+
+     effect( spriggan_sap, damage_magicka_regen ).
+     effect( spriggan_sap, fortify_alteration ).
+     effect( spriggan_sap, fortify_enchanting ).
+     effect( spriggan_sap, fortify_smithing ).
+
+     effect( swamp_fungal_pod, lingering_damage_magicka ).
+     effect( swamp_fungal_pod, paralysis ).
+     effect( swamp_fungal_pod, resist_shock ).
+     effect( swamp_fungal_pod, restore_health ).
+
+     effect( taproot, fortify_illusion ).
+     effect( taproot, regenerate_magicka ).
+     effect( taproot, restore_magicka ).
+     effect( taproot, weakness_to_magic ).
+
+     effect( thistle_branch, fortify_heavy_armor ).
+     effect( thistle_branch, ravage_stamina ).
+     effect( thistle_branch, resist_frost ).
+     effect( thistle_branch, resist_poison ).
+
+     effect( torchbug_thorax, fortify_stamina ).
+     effect( torchbug_thorax, lingering_damage_magicka ).
+     effect( torchbug_thorax, restore_stamina ).
+     effect( torchbug_thorax, weakness_to_magic ).
+
+     effect( troll_fat, damage_health ).
+     effect( troll_fat, fortify_two_handed ).
+     effect( troll_fat, frenzy ).
+     effect( troll_fat, resist_poison ).
+
+     effect( tundra_cotton, fortify_barter ).
+     effect( tundra_cotton, fortify_block ).
+     effect( tundra_cotton, fortify_magicka ).
+     effect( tundra_cotton, resist_magic ).
+
+     effect( vampire_dust, cure_disease ).
+     effect( vampire_dust, invisibility ).
+     effect( vampire_dust, regenerate_health ).
+     effect( vampire_dust, restore_magicka ).
+
+     effect( void_salts, damage_health ).
+     effect( void_salts, fortify_magicka ).
+     effect( void_salts, resist_magic ).
+     effect( void_salts, weakness_to_shock ).
+
+     effect( wheat, damage_stamina_regen ).
+     effect( wheat, fortify_health ).
+     effect( wheat, lingering_damage_magicka ).
+     effect( wheat, restore_health ).
+
+     effect( white_cap, fortify_heavy_armor ).
+     effect( white_cap, ravage_magicka ).
+     effect( white_cap, restore_magicka ).
+     effect( white_cap, weakness_to_frost ).
+
+     effect( wisp_wrappings, fortify_carry_weight ).
+     effect( wisp_wrappings, fortify_destruction ).
+     effect( wisp_wrappings, resist_magic ).
+     effect( wisp_wrappings, restore_stamina ).
+
+     effect( yellow_mountain_flower, damage_stamina_regen ).
+     effect( yellow_mountain_flower, fortify_health ).
+     effect( yellow_mountain_flower, fortify_restoration ).
+     effect( yellow_mountain_flower, resist_poison ).
+   #+END_SRC
+
+*** Rules for Mixing
+
+   A potion can be created if two ingredients are combined that share at least one effect:
+
+   #+BEGIN_SRC prolog :tangle src/alchemy.pl
+     potion( IngredientA, IngredientB ) :- potion( IngredientA, IngredientB, _ ).
+
+     potion( IngredientA, IngredientB, Effect ) :-
+         effect( IngredientA, Effect ),
+         effect( IngredientB, Effect ),
+         IngredientA \= IngredientB.
+   #+END_SRC
+
+   Given a list of ingredients, what potions can be mixed?
+
+   #+BEGIN_SRC prolog :tangle src/alchemy.pl
+     mixes( [], _, _, _ ) :- fail.
+     mixes( L, Ia, Ib, E ) :-
+         permutation( L, [Ia|[Ib|_]] ),
+         potion( Ia, Ib, E ).
+   #+END_SRC
+
+*** Running
+
+    Start the Prolog interpreter.  I'm using GNU Prolog here, but
+    others should work as well.
+
+    Next, load the code:
+
+    #+BEGIN_SRC prolog
+      | ?- consult('alchemy.pl').
+      compiling alchemy.pl for byte code...
+      alchemy.pl compiled, 504 lines read - 51392 bytes written, 36 ms
+
+      (9 ms) yes
+      | ?-
+    #+END_SRC
+
+    =| ?-= is the prolog prompt in this implementation.
+
+    Now we can try a query:
+
+    #+BEGIN_SRC prolog
+    | ?- potion( wisp_wrappings, white_cap ).
+
+    no
+    | ?-
+    #+END_SRC
+
+    So, that combination returns no matches, i.e., those ingredients
+    do not mix to form a potion.
+
+    Let's try different ingredients:
+
+    #+BEGIN_SRC prolog
+      | ?- potion( wheat, hanging_moss ).
+
+      true ?
+    #+END_SRC
+
+    This is Prolog telling us that those ingredients do mix.  The =?=
+    prompt is waiting for us to ask for more results, which we can do
+    by entering =;=:
+
+    #+BEGIN_SRC prolog
+    true ? ;
+
+    no
+    | ?-
+    #+END_SRC
+
+    Turns out that is the only result.
+
+    Let's imagine we're in dire need of a healing potion, what
+    ingredients can we use?
+
+    #+BEGIN_SRC prolog
+      | ?- potion( A, B, restore_health ).
+
+      A = blisterwort
+      B = blue_dartwing ? ;
+
+      A = blisterwort
+      B = blue_mountain_flower ? ;
+    #+END_SRC
+
+    …and so on.
+
+    Maybe we have some wheat on hand, what can we combine it with?
+
+    #+BEGIN_SRC prolog
+      | ?- potion( wheat, Ingredient, Effect ).
+
+      Effect = damage_stamina_regen
+      Ingredient = creep_cluster ? ;
+
+      Effect = damage_stamina_regen
+      Ingredient = daedra_heart ? ;
+
+      Effect = damage_stamina_regen
+      Ingredient = frost_mirriam ? ;
+
+      Effect = damage_stamina_regen
+      Ingredient = giants_toe ? ;
+
+      Effect = damage_stamina_regen
+      Ingredient = histcarp ?
+
+      yes
+      | ?-
+    #+END_SRC
+
+    I've got a bunch of ingredients, what can I make and sell?
+
+    #+BEGIN_SRC prolog
+      | ?- mixes( [wheat, vampire_dust, daedra_heart, troll_fat], A, B, E ).
+
+      A = wheat
+      B = daedra_heart
+      E = damage_stamina_regen ? ;
+
+      A = wheat
+      B = daedra_heart
+      E = restore_health ?
+
+      yes
+    #+END_SRC
+
+    Another way to get ingredients for a particular potion:
+
+    #+BEGIN_SRC prolog
+      | ?- mixes( L, _, _, restore_health ).
+
+      L = [blisterwort,blue_dartwing] ? ;
+
+      L = [blisterwort,blue_mountain_flower] ?
+
+      yes
+    #+END_SRC
+
+** Haskell
+
+   In haskell, we can use list-comprehensions to perform similar sorts of searches.
+
+*** Facts
+
+    #+BEGIN_SRC haskell :tangle src/AlchemyFacts.hs
+      module AlchemyFacts where
+
+      type Ingredient = String
+      type Effect     = String
+      type Property   = (Ingredient, Effect)
+
+      type Facts = [Property]
+    #+END_SRC
+
+    #+BEGIN_SRC haskell :tangle no
+      facts :: Facts
+      facts = [
+        ("Abecean Longfin", "Fortify Restoration"),
+        ("Abecean Longfin", "Fortify Sneak"),
+        ("Abecean Longfin", "Weakness To Frost"),
+        ("Abecean Longfin", "Weakness To Poison"),
+
+        ("Ancestor Moth Wing", "Damage Magicka Regen"),
+        ("Ancestor Moth Wing", "Damage Stamina"),
+        ("Ancestor Moth Wing", "Fortify Conjuration"),
+        ("Ancestor Moth Wing", "Fortify Enchanting"),
+
+        ("Bear Claws", "Damage Magicka Regen"),
+        ("Bear Claws", "Fortify Health"),
+        ("Bear Claws", "Fortify One Handed"),
+        ("Bear Claws", "Restore Stamina"),
+        -- …
+    #+END_SRC
+
+    #+BEGIN_SRC haskell :tangle src/AlchemyFacts.hs :exports none
+      facts :: Facts
+      facts = [
+        ("Abecean Longfin", "Fortify Restoration"),
+        ("Abecean Longfin", "Fortify Sneak"),
+        ("Abecean Longfin", "Weakness To Frost"),
+        ("Abecean Longfin", "Weakness To Poison"),
+
+        ("Ancestor Moth Wing", "Damage Magicka Regen"),
+        ("Ancestor Moth Wing", "Damage Stamina"),
+        ("Ancestor Moth Wing", "Fortify Conjuration"),
+        ("Ancestor Moth Wing", "Fortify Enchanting"),
+
+        ("Bear Claws", "Damage Magicka Regen"),
+        ("Bear Claws", "Fortify Health"),
+        ("Bear Claws", "Fortify One Handed"),
+        ("Bear Claws", "Restore Stamina"),
+
+        ("Bee", "Ravage Stamina"),
+        ("Bee", "Regenerate Stamina"),
+        ("Bee", "Restore Stamina"),
+        ("Bee", "Weakness To Shock"),
+
+        ("Beehive Husk", "Fortify Destruction"),
+        ("Beehive Husk", "Fortify Light Armor"),
+        ("Beehive Husk", "Fortify Sneak"),
+        ("Beehive Husk", "Resist Poison"),
+
+        ("Bleeding Crown", "Fortify Block"),
+        ("Bleeding Crown", "Resist Magic"),
+        ("Bleeding Crown", "Weakness To Fire"),
+        ("Bleeding Crown", "Weakness To Poison"),
+
+        ("Blisterwort", "Damage Stamina"),
+        ("Blisterwort", "Fortify Smithing"),
+        ("Blisterwort", "Frenzy"),
+        ("Blisterwort", "Restore Health"),
+
+        ("Blue Butterfly Wing", "Damage Magicka Regen"),
+        ("Blue Butterfly Wing", "Damage Stamina"),
+        ("Blue Butterfly Wing", "Fortify Conjuration"),
+        ("Blue Butterfly Wing", "Fortify Enchanting"),
+
+        ("Blue Dartwing", "Fear"),
+        ("Blue Dartwing", "Fortify Pickpocket"),
+        ("Blue Dartwing", "Resist Shock"),
+        ("Blue Dartwing", "Restore Health"),
+
+        ("Blue Mountain Flower", "Damage Magicka Regen"),
+        ("Blue Mountain Flower", "Fortify Conjuration"),
+        ("Blue Mountain Flower", "Fortify Health"),
+        ("Blue Mountain Flower", "Restore Health"),
+
+        ("Bone Meal", "Damage Stamina"),
+        ("Bone Meal", "Fortify Conjuration"),
+        ("Bone Meal", "Ravage Stamina"),
+        ("Bone Meal", "Resist Fire"),
+
+        ("Briar Heart", "Fortify Block"),
+        ("Briar Heart", "Fortify Magicka"),
+        ("Briar Heart", "Paralysis"),
+        ("Briar Heart", "Restore Magicka"),
+
+        ("Butterfly Wing", "Damage Magicka"),
+        ("Butterfly Wing", "Fortify Barter"),
+        ("Butterfly Wing", "Lingering Damage Stamina"),
+        ("Butterfly Wing", "Restore Health"),
+
+        ("Canis Root", "Damage Stamina"),
+        ("Canis Root", "Fortify Marksman"),
+        ("Canis Root", "Fortify One Handed"),
+        ("Canis Root", "Paralysis"),
+
+        ("Charred Skeever Hide", "Cure Disease"),
+        ("Charred Skeever Hide", "Resist Poison"),
+        ("Charred Skeever Hide", "Restore Health"),
+        ("Charred Skeever Hide", "Restore Stamina"),
+
+        ("Chaurus Eggs", "Damage Magicka"),
+        ("Chaurus Eggs", "Fortify Stamina"),
+        ("Chaurus Eggs", "Invisibility"),
+        ("Chaurus Eggs", "Weakness To Poison"),
+
+        ("Chaurus Hunter Antennae", "Damage Magicka Regen"),
+        ("Chaurus Hunter Antennae", "Damage Stamina"),
+        ("Chaurus Hunter Antennae", "Fortify Conjuration"),
+        ("Chaurus Hunter Antennae", "Fortify Enchanting"),
+
+        ("Chicken Egg", "Damage Magicka Regen"),
+        ("Chicken Egg", "Lingering Damage Stamina"),
+        ("Chicken Egg", "Resist Magic"),
+        ("Chicken Egg", "Waterbreathing"),
+
+        ("Creep Cluster", "Damage Stamina Regen"),
+        ("Creep Cluster", "Fortify Carry Weight"),
+        ("Creep Cluster", "Restore Magicka"),
+        ("Creep Cluster", "Weakness To Magic"),
+
+        ("Crimson Nirnroot", "Damage Health"),
+        ("Crimson Nirnroot", "Damage Stamina"),
+        ("Crimson Nirnroot", "Invisibility"),
+        ("Crimson Nirnroot", "Resist Magic"),
+
+        ("Cyrodilic Spadetail", "Damage Stamina"),
+        ("Cyrodilic Spadetail", "Fear"),
+        ("Cyrodilic Spadetail", "Fortify Restoration"),
+        ("Cyrodilic Spadetail", "Ravage Health"),
+
+        ("Daedra Heart", "Damage Magicka"),
+        ("Daedra Heart", "Damage Stamina Regen"),
+        ("Daedra Heart", "Fear"),
+        ("Daedra Heart", "Restore Health"),
+
+        ("Deathbell", "Damage Health"),
+        ("Deathbell", "Ravage Stamina"),
+        ("Deathbell", "Slow"),
+        ("Deathbell", "Weakness To Poison"),
+
+        ("Dragons Tongue", "Fortify Barter"),
+        ("Dragons Tongue", "Fortify Illusion"),
+        ("Dragons Tongue", "Fortify Two Handed"),
+        ("Dragons Tongue", "Resist Fire"),
+
+        ("Dwarven Oil", "Fortify Illusion"),
+        ("Dwarven Oil", "Regenerate Magicka"),
+        ("Dwarven Oil", "Restore Magicka"),
+        ("Dwarven Oil", "Weakness To Magic"),
+
+        ("Ectoplasm", "Damage Health"),
+        ("Ectoplasm", "Fortify Destruction"),
+        ("Ectoplasm", "Fortify Magicka"),
+        ("Ectoplasm", "Restore Magicka"),
+
+        ("Elves Ear", "Fortify Marksman"),
+        ("Elves Ear", "Resist Fire"),
+        ("Elves Ear", "Restore Magicka"),
+        ("Elves Ear", "Weakness To Frost"),
+
+        ("Eye of Sabre Cat", "Damage Magicka"),
+        ("Eye of Sabre Cat", "Ravage Health"),
+        ("Eye of Sabre Cat", "Restore Health"),
+        ("Eye of Sabre Cat", "Restore Stamina"),
+
+        ("Falmer Ear", "Damage Health"),
+        ("Falmer Ear", "Fortify Lockpicking"),
+        ("Falmer Ear", "Frenzy"),
+        ("Falmer Ear", "Resist Poison"),
+
+        ("Fire Salts", "Regenerate Magicka"),
+        ("Fire Salts", "Resist Fire"),
+        ("Fire Salts", "Restore Magicka"),
+        ("Fire Salts", "Weakness To Frost"),
+
+        ("Fly Amanita", "Fortify Two Handed"),
+        ("Fly Amanita", "Frenzy"),
+        ("Fly Amanita", "Regenerate Stamina"),
+        ("Fly Amanita", "Resist Fire"),
+
+        ("Frost Mirriam", "Damage Stamina Regen"),
+        ("Frost Mirriam", "Fortify Sneak"),
+        ("Frost Mirriam", "Ravage Magicka"),
+        ("Frost Mirriam", "Resist Frost"),
+
+        ("Frost Salts", "Fortify Conjuration"),
+        ("Frost Salts", "Resist Frost"),
+        ("Frost Salts", "Restore Magicka"),
+        ("Frost Salts", "Weakness To Fire"),
+
+        ("Garlic", "Fortify Stamina"),
+        ("Garlic", "Regenerate Health"),
+        ("Garlic", "Regenerate Magicka"),
+        ("Garlic", "Resist Poison"),
+
+        ("Giant Lichen", "Ravage Health"),
+        ("Giant Lichen", "Restore Magicka"),
+        ("Giant Lichen", "Weakness To Poison"),
+        ("Giant Lichen", "Weakness To Shock"),
+
+        ("Giants Toe", "Damage Stamina"),
+        ("Giants Toe", "Damage Stamina Regen"),
+        ("Giants Toe", "Fortify Carry Weight"),
+        ("Giants Toe", "Fortify Health"),
+
+        ("Gleamblossom", "Fear"),
+        ("Gleamblossom", "Paralysis"),
+        ("Gleamblossom", "Regenerate Health"),
+        ("Gleamblossom", "Resist Magic"),
+
+        ("Glow Dust", "Damage Magicka"),
+        ("Glow Dust", "Damage Magicka Regen"),
+        ("Glow Dust", "Fortify Destruction"),
+        ("Glow Dust", "Resist Shock"),
+
+        ("Glowing Mushroom", "Fortify Destruction"),
+        ("Glowing Mushroom", "Fortify Health"),
+        ("Glowing Mushroom", "Fortify Smithing"),
+        ("Glowing Mushroom", "Resist Shock"),
+
+        ("Grass Pod", "Fortify Alteration"),
+        ("Grass Pod", "Ravage Magicka"),
+        ("Grass Pod", "Resist Poison"),
+        ("Grass Pod", "Restore Magicka"),
+
+        ("Hagraven Claw", "Fortify Barter"),
+        ("Hagraven Claw", "Fortify Enchanting"),
+        ("Hagraven Claw", "Lingering Damage Magicka"),
+        ("Hagraven Claw", "Resist Magic"),
+
+        ("Hagraven Feathers", "Damage Magicka"),
+        ("Hagraven Feathers", "Fortify Conjuration"),
+        ("Hagraven Feathers", "Frenzy"),
+        ("Hagraven Feathers", "Weakness To Shock"),
+
+        ("Hanging Moss", "Damage Magicka"),
+        ("Hanging Moss", "Damage Magicka Regen"),
+        ("Hanging Moss", "Fortify Health"),
+        ("Hanging Moss", "Fortify One Handed"),
+
+        ("Hawks Egg", "Resist Magic"),
+        ("Hawks Egg", "Damage Magicka Regen"),
+        ("Hawks Egg", "Waterbreathing"),
+        ("Hawks Egg", "Lingering Damage Stamina"),
+
+        ("Hawk Beak", "Fortify Carry Weight"),
+        ("Hawk Beak", "Resist Frost"),
+        ("Hawk Beak", "Resist Shock"),
+        ("Hawk Beak", "Restore Stamina"),
+
+        ("Hawk Feathers", "Cure Disease"),
+        ("Hawk Feathers", "Fortify Light Armor"),
+        ("Hawk Feathers", "Fortify One Handed"),
+        ("Hawk Feathers", "Fortify Sneak"),
+
+        ("Histcarp", "Damage Stamina Regen"),
+        ("Histcarp", "Fortify Magicka"),
+        ("Histcarp", "Restore Stamina"),
+        ("Histcarp", "Waterbreathing"),
+
+        ("Honeycomb", "Fortify Block"),
+        ("Honeycomb", "Fortify Light Armor"),
+        ("Honeycomb", "Ravage Stamina"),
+        ("Honeycomb", "Restore Stamina"),
+
+        ("Human Flesh", "Damage Health"),
+        ("Human Flesh", "Fortify Sneak"),
+        ("Human Flesh", "Paralysis"),
+        ("Human Flesh", "Restore Magicka"),
+
+        ("Human Heart", "Damage Health"),
+        ("Human Heart", "Damage Magicka"),
+        ("Human Heart", "Damage Magicka Regen"),
+        ("Human Heart", "Frenzy"),
+
+        ("Ice Wraith Teeth", "Fortify Heavy Armor"),
+        ("Ice Wraith Teeth", "Invisibility"),
+        ("Ice Wraith Teeth", "Weakness To Fire"),
+        ("Ice Wraith Teeth", "Weakness To Frost"),
+
+        ("Imp Stool", "Damage Health"),
+        ("Imp Stool", "Lingering Damage Health"),
+        ("Imp Stool", "Paralysis"),
+        ("Imp Stool", "Restore Health"),
+
+        ("Jasbay Grapes", "Fortify Magicka"),
+        ("Jasbay Grapes", "Ravage Health"),
+        ("Jasbay Grapes", "Regenerate Magicka"),
+        ("Jasbay Grapes", "Weakness To Magic"),
+
+        ("Juniper Berries", "Damage Stamina Regen"),
+        ("Juniper Berries", "Fortify Marksman"),
+        ("Juniper Berries", "Regenerate Health"),
+        ("Juniper Berries", "Weakness To Fire"),
+
+        ("Large Antlers", "Damage Stamina Regen"),
+        ("Large Antlers", "Fortify Stamina"),
+        ("Large Antlers", "Restore Stamina"),
+        ("Large Antlers", "Slow"),
+
+        ("Lavender", "Fortify Conjuration"),
+        ("Lavender", "Fortify Stamina"),
+        ("Lavender", "Ravage Magicka"),
+        ("Lavender", "Resist Magic"),
+
+        ("Luna Moth Wing", "Damage Magicka"),
+        ("Luna Moth Wing", "Fortify Light Armor"),
+        ("Luna Moth Wing", "Invisibility"),
+        ("Luna Moth Wing", "Regenerate Health"),
+
+        ("Moon Sugar", "Regenerate Magicka"),
+        ("Moon Sugar", "Resist Frost"),
+        ("Moon Sugar", "Restore Magicka"),
+        ("Moon Sugar", "Weakness To Fire"),
+
+        ("Mora Tapinella", "Fortify Illusion"),
+        ("Mora Tapinella", "Lingering Damage Health"),
+        ("Mora Tapinella", "Regenerate Stamina"),
+        ("Mora Tapinella", "Restore Magicka"),
+
+        ("Mudcrab Chitin", "Cure Disease"),
+        ("Mudcrab Chitin", "Resist Fire"),
+        ("Mudcrab Chitin", "Resist Poison"),
+        ("Mudcrab Chitin", "Restore Stamina"),
+
+        ("Namiras Rot", "Damage Magicka"),
+        ("Namiras Rot", "Fear"),
+        ("Namiras Rot", "Fortify Lockpicking"),
+        ("Namiras Rot", "Regenerate Health"),
+
+        ("Nightshade", "Damage Health"),
+        ("Nightshade", "Damage Magicka Regen"),
+        ("Nightshade", "Fortify Destruction"),
+        ("Nightshade", "Lingering Damage Stamina"),
+
+        ("Nirnroot", "Damage Health"),
+        ("Nirnroot", "Damage Stamina"),
+        ("Nirnroot", "Invisibility"),
+        ("Nirnroot", "Resist Magic"),
+
+        ("Nordic Barnacle", "Damage Magicka"),
+        ("Nordic Barnacle", "Fortify Pickpocket"),
+        ("Nordic Barnacle", "Regenerate Health"),
+        ("Nordic Barnacle", "Waterbreathing"),
+
+        ("Orange Dartwing", "Fortify Pickpocket"),
+        ("Orange Dartwing", "Lingering Damage Health"),
+        ("Orange Dartwing", "Ravage Magicka"),
+        ("Orange Dartwing", "Restore Stamina"),
+
+        ("Pearl", "Fortify Block"),
+        ("Pearl", "Resist Shock"),
+        ("Pearl", "Restore Magicka"),
+        ("Pearl", "Restore Stamina"),
+
+        ("Pine Thrush Egg", "Fortify Lockpicking"),
+        ("Pine Thrush Egg", "Resist Shock"),
+        ("Pine Thrush Egg", "Restore Stamina"),
+        ("Pine Thrush Egg", "Weakness To Poison"),
+
+        ("Poison Bloom", "Damage Health"),
+        ("Poison Bloom", "Fear"),
+        ("Poison Bloom", "Fortify Carry Weight"),
+        ("Poison Bloom", "Slow"),
+
+        ("Powdered Mammoth Tusk", "Fear"),
+        ("Powdered Mammoth Tusk", "Fortify Sneak"),
+        ("Powdered Mammoth Tusk", "Restore Stamina"),
+        ("Powdered Mammoth Tusk", "Weakness To Fire"),
+
+        ("Purple Mountain Flower", "Fortify Sneak"),
+        ("Purple Mountain Flower", "Lingering Damage Magicka"),
+        ("Purple Mountain Flower", "Resist Frost"),
+        ("Purple Mountain Flower", "Restore Stamina"),
+
+        ("Red Mountain Flower", "Damage Health"),
+        ("Red Mountain Flower", "Fortify Magicka"),
+        ("Red Mountain Flower", "Ravage Magicka"),
+        ("Red Mountain Flower", "Restore Magicka"),
+
+        ("River Betty", "Damage Health"),
+        ("River Betty", "Fortify Alteration"),
+        ("River Betty", "Fortify Carry Weight"),
+        ("River Betty", "Slow"),
+
+        ("Rock Warbler Egg", "Damage Stamina"),
+        ("Rock Warbler Egg", "Fortify One Handed"),
+        ("Rock Warbler Egg", "Restore Health"),
+        ("Rock Warbler Egg", "Weakness To Magic"),
+
+        ("Sabre Cat Tooth", "Fortify Heavy Armor"),
+        ("Sabre Cat Tooth", "Fortify Smithing"),
+        ("Sabre Cat Tooth", "Restore Stamina"),
+        ("Sabre Cat Tooth", "Weakness To Poison"),
+
+        ("Salmon Roe", "Restore Stamina"),
+        ("Salmon Roe", "Waterbreathing"),
+        ("Salmon Roe", "Fortify Magicka"),
+        ("Salmon Roe", "Regenerate Magicka"),
+
+        ("Salt Pile", "Fortify Restoration"),
+        ("Salt Pile", "Regenerate Magicka"),
+        ("Salt Pile", "Slow"),
+        ("Salt Pile", "Weakness To Magic"),
+
+        ("Scaly Pholiota", "Fortify Carry Weight"),
+        ("Scaly Pholiota", "Fortify Illusion"),
+        ("Scaly Pholiota", "Regenerate Stamina"),
+        ("Scaly Pholiota", "Weakness To Magic"),
+
+        ("Silverside Perch", "Damage Stamina Regen"),
+        ("Silverside Perch", "Ravage Health"),
+        ("Silverside Perch", "Resist Frost"),
+        ("Silverside Perch", "Restore Stamina"),
+
+        ("Skeever Tail", "Damage Health"),
+        ("Skeever Tail", "Damage Stamina Regen"),
+        ("Skeever Tail", "Fortify Light Armor"),
+        ("Skeever Tail", "Ravage Health"),
+
+        ("Slaughterfish Egg", "Fortify Pickpocket"),
+        ("Slaughterfish Egg", "Fortify Stamina"),
+        ("Slaughterfish Egg", "Lingering Damage Magicka"),
+        ("Slaughterfish Egg", "Resist Poison"),
+
+        ("Slaughterfish Scales", "Fortify Block"),
+        ("Slaughterfish Scales", "Fortify Heavy Armor"),
+        ("Slaughterfish Scales", "Lingering Damage Health"),
+        ("Slaughterfish Scales", "Resist Frost"),
+
+        ("Small Antlers", "Damage Health"),
+        ("Small Antlers", "Fortify Restoration"),
+        ("Small Antlers", "Lingering Damage Stamina"),
+        ("Small Antlers", "Weakness To Poison"),
+
+        ("Small Pearl", "Fortify One Handed"),
+        ("Small Pearl", "Fortify Restoration"),
+        ("Small Pearl", "Resist Frost"),
+        ("Small Pearl", "Restore Stamina"),
+
+        ("Snowberries", "Fortify Enchanting"),
+        ("Snowberries", "Resist Fire"),
+        ("Snowberries", "Resist Frost"),
+        ("Snowberries", "Resist Shock"),
+
+        ("Spider Egg", "Damage Magicka Regen"),
+        ("Spider Egg", "Damage Stamina"),
+        ("Spider Egg", "Fortify Lockpicking"),
+        ("Spider Egg", "Fortify Marksman"),
+
+        ("Spriggan Sap", "Damage Magicka Regen"),
+        ("Spriggan Sap", "Fortify Alteration"),
+        ("Spriggan Sap", "Fortify Enchanting"),
+        ("Spriggan Sap", "Fortify Smithing"),
+
+        ("Swamp Fungal Pod", "Lingering Damage Magicka"),
+        ("Swamp Fungal Pod", "Paralysis"),
+        ("Swamp Fungal Pod", "Resist Shock"),
+        ("Swamp Fungal Pod", "Restore Health"),
+
+        ("Taproot", "Fortify Illusion"),
+        ("Taproot", "Regenerate Magicka"),
+        ("Taproot", "Restore Magicka"),
+        ("Taproot", "Weakness To Magic"),
+
+        ("Thistle Branch", "Fortify Heavy Armor"),
+        ("Thistle Branch", "Ravage Stamina"),
+        ("Thistle Branch", "Resist Frost"),
+        ("Thistle Branch", "Resist Poison"),
+
+        ("Torchbug Thorax", "Fortify Stamina"),
+        ("Torchbug Thorax", "Lingering Damage Magicka"),
+        ("Torchbug Thorax", "Restore Stamina"),
+        ("Torchbug Thorax", "Weakness To Magic"),
+
+        ("Troll Fat", "Damage Health"),
+        ("Troll Fat", "Fortify Two Handed"),
+        ("Troll Fat", "Frenzy"),
+        ("Troll Fat", "Resist Poison"),
+
+        ("Tundra Cotton", "Fortify Barter"),
+        ("Tundra Cotton", "Fortify Block"),
+        ("Tundra Cotton", "Fortify Magicka"),
+        ("Tundra Cotton", "Resist Magic"),
+
+        ("Vampire Dust", "Cure Disease"),
+        ("Vampire Dust", "Invisibility"),
+        ("Vampire Dust", "Regenerate Health"),
+        ("Vampire Dust", "Restore Magicka"),
+
+        ("Void Salts", "Damage Health"),
+        ("Void Salts", "Fortify Magicka"),
+        ("Void Salts", "Resist Magic"),
+        ("Void Salts", "Weakness To Shock"),
+
+        ("Wheat", "Damage Stamina Regen"),
+        ("Wheat", "Fortify Health"),
+        ("Wheat", "Lingering Damage Magicka"),
+        ("Wheat", "Restore Health"),
+
+        ("White Cap", "Fortify Heavy Armor"),
+        ("White Cap", "Ravage Magicka"),
+        ("White Cap", "Restore Magicka"),
+        ("White Cap", "Weakness To Frost"),
+
+        ("Wisp Wrappings", "Fortify Carry Weight"),
+        ("Wisp Wrappings", "Fortify Destruction"),
+        ("Wisp Wrappings", "Resist Magic"),
+        ("Wisp Wrappings", "Restore Stamina"),
+
+        ("Yellow Mountain Flower", "Damage Stamina Regen"),
+        ("Yellow Mountain Flower", "Fortify Health"),
+        ("Yellow Mountain Flower", "Fortify Restoration"),
+        ("Yellow Mountain Flower", "Resist Poison")
+        ]
+    #+END_SRC
+
+    To check if two ingredients can mix:
+
+    #+BEGIN_SRC haskell :tangle src/alchemy.hs
+      module Alchemy where
+      import Data.List  -- for nub (unique list)
+      import AlchemyFacts
+
+      ingredients = nub [i | (i, _) <- facts]
+      effects     = nub [e | (_, e) <- facts]
+
+      potion :: Ingredient -> Ingredient -> [Effect]
+      potion a b = [e |
+                    (i, e) <- facts,
+                    (i', e') <- facts,
+                    e == e',
+                    i == a,
+                    i' == b]
+    #+END_SRC
+
+    The interface for this function is a bit different than the Prolog
+    implementation in that it returns list of =Effects=.
+
+    Running this code in GHCi, I get:
+
+    #+BEGIN_SRC haskell :tangle no
+    GHCi, version 7.4.1: http://www.haskell.org/ghc/  :? for help
+    Prelude> :load alchemy
+    [1 of 2] Compiling AlchemyFacts     ( AlchemyFacts.hs, interpreted )
+    [2 of 2] Compiling Alchemy          ( alchemy.hs, interpreted )
+    Ok, modules loaded: AlchemyFacts, Alchemy.
+    *Alchemy> :t ingredients
+    ingredients :: [Ingredient]
+    *Alchemy> :t effects
+    effects :: [Effect]
+    *Alchemy> potion "Wheat" "Daedra Heart"
+    ["Damage Stamina Regen","Restore Health"]
+    #+END_SRC
+
+    In Haskell, unlike Prolog, we don't get automatic reverse
+    execution.  So, we'll need another function to search for
+    ingredients with a given =Effect=.
+
+    #+BEGIN_SRC haskell :tangle src/alchemy.hs
+      withEffect :: Effect -> [Ingredient]
+      withEffect e = nub [i | (i, e') <- facts, e == e']
+    #+END_SRC
+
+    #+BEGIN_SRC haskell :tangle no
+    *Alchemy> withEffect "Frenzy"
+    ["Blisterwort","Falmer Ear","Fly Amanita","Hagraven Feathers","Human Heart","Troll Fat"]
+    #+END_SRC
+
+
+** Footnotes
+
+[fn:2] [[http://www.learnprolognow.org][/Learn Prolog Now/]]
+
+** License
+#+BEGIN_HTML
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+#+END_HTML

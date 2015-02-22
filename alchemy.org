@@ -191,7 +191,7 @@
 
 *** Alchemy Facts: mapping ingredients to effects:
 
-   #+BEGIN_SRC prolog :tangle alchemy.pl
+   #+BEGIN_SRC prolog :tangle src/alchemy.pl
      % -*- mode: prolog -*-
      effect( abecean_longfin, fortify_restoration ).
      effect( abecean_longfin, fortify_sneak ).
@@ -216,7 +216,7 @@
 
    and so on for all available ingredients.
 
-   #+BEGIN_SRC prolog :tangle alchemy.pl :exports none
+   #+BEGIN_SRC prolog :tangle src/alchemy.pl :exports none
      effect( beehive_husk, fortify_destruction ).
      effect( beehive_husk, fortify_light_armor ).
      effect( beehive_husk, fortify_sneak ).
@@ -692,7 +692,7 @@
 
    A potion can be created if two ingredients are combined that share at least one effect:
 
-   #+BEGIN_SRC prolog :tangle alchemy.pl
+   #+BEGIN_SRC prolog :tangle src/alchemy.pl
      potion( IngredientA, IngredientB ) :- potion( IngredientA, IngredientB, _ ).
 
      potion( IngredientA, IngredientB, Effect ) :-
@@ -703,7 +703,7 @@
 
    Given a list of ingredients, what potions can be mixed?
 
-   #+BEGIN_SRC prolog :tangle alchemy.pl
+   #+BEGIN_SRC prolog :tangle src/alchemy.pl
      mixes( [], _, _, _ ) :- fail.
      mixes( L, Ia, Ib, E ) :-
          permutation( L, [Ia|[Ib|_]] ),
@@ -834,7 +834,7 @@
 
 *** Facts
 
-    #+BEGIN_SRC haskell :tangle AlchemyFacts.hs
+    #+BEGIN_SRC haskell :tangle src/AlchemyFacts.hs
       module AlchemyFacts where
 
       type Ingredient = String
@@ -864,7 +864,7 @@
         -- …
     #+END_SRC
 
-    #+BEGIN_SRC haskell :tangle AlchemyFacts.hs :exports none
+    #+BEGIN_SRC haskell :tangle src/AlchemyFacts.hs :exports none
       facts :: Facts
       facts = [
         ("Abecean Longfin", "Fortify Restoration"),
@@ -1361,7 +1361,7 @@
 
     To check if two ingredients can mix:
 
-    #+BEGIN_SRC haskell :tangle alchemy.hs
+    #+BEGIN_SRC haskell :tangle src/alchemy.hs
       module Alchemy where
       import Data.List  -- for nub (unique list)
       import AlchemyFacts
@@ -1401,7 +1401,7 @@
     execution.  So, we'll need another function to search for
     ingredients with a given =Effect=.
 
-    #+BEGIN_SRC haskell :tangle alchemy.hs
+    #+BEGIN_SRC haskell :tangle src/alchemy.hs
       withEffect :: Effect -> [Ingredient]
       withEffect e = nub [i | (i, e') <- facts, e == e']
     #+END_SRC

@@ -1,5 +1,6 @@
 # Compiled
 *.elc
+*.html
 
 # Packaging
 .cask

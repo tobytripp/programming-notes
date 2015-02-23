@@ -1,0 +1,227 @@
+#+PROPERTY: tangle src/ch5.hs
+
+* Chapter 5: Relations
+
+  # Tangle with C-c C-x v t   (org-babel-tangle)
+  #   or with F6
+
+  #+BEGIN_SRC haskell
+    module CH5 where
+
+    import Data.List
+    import SetOrd
+  #+END_SRC
+
+  A /relation/ is a Set of ordered pairs.
+
+    $(x,y) \in R$   where /R/ is a relation.
+
+  Usually annotated as /xRy/, /R(x,y)/, or /Rxy/.
+
+  The set consisting of all first coordinates of pairs in /R/, is
+  called the /domain/ of /R/:
+  \begin{equation}
+  dom(R) = \left\{ x \vert \exists y (xRy) \right\}
+  \end{equation}
+
+
+  The /range/ is given by:
+  \begin{equation}
+  ran(R) = \left\{ y \vert \exists x (xRy) \right\}
+  \end{equation}
+
+  The /identity/ relation on /A/:
+  \begin{equation}
+  \Delta_{A} = \left\{ (a,b) \in A^2 |  a = b \right\} = \left\{ (a,a) \vert \in A \right\}
+  \end{equation}
+
+  Given a relation, /R/, between /A/ and /B/, the /inverse/ of /R/ is:
+  \begin{equation}
+  R^{-1} = \left\{ (b,a) | aRb \right\}
+  \end{equation}
+
+** Properties of Relations
+
+   A relation /R/ is *reflexive* on /A/ if for every $x \in A: xRx$.
+
+   A relation /R/ on /A/ is *irreflexive* if for no $x \in A: xRx$.
+   For example, the relation \lt on $\mathbb{N}$ is irreflexive.
+
+   A relation /R/ on /A/ is *symmetric* if for all $x,y \in A$: if $xRy$ then $yRx$.
+
+   A relation /R/ on /A/ is *asymmetric* if for all $x,y \in A$: if $xRy$ then not $yRx$.
+   The relation < on $\mathbb{N}$ is asymmetric.
+
+   A relation /R/ on /A/ is asymmetric iff $R \cap R^{-1} = \emptyset$
+
+   A relation /R/ on /A/ is *antisymmetric* if for all $x,y \in A$: if $xRy$ and $yRx$ then $x = y$.
+
+   | reflexivity    | $\forall x   ~ xRx$                                 |
+   | irreflexivity  | $\forall x   ~ \neg xRx$                            |
+   | symmetry       | $\forall xy  ~ (xRy \Rightarrow yRx)$               |
+   | asymmetry      | $\forall xy  ~ (xRy \Rightarrow \neg yRx)$          |
+   | antisymmetry   | $\forall xy  ~ (xRy \land yRx \Rightarrow x = y)$   |
+   | transitivity   | $\forall xyz ~ (xRy \land yRz \Rightarrow xRz)$     |
+   | intransitivity | $\forall xyz ~ (xRy \land yRz \Rightarrow \neg xRz$ |
+   | linearity      | $\forall xy  ~ (xRy \lor yRx \lor x = y)$           |
+
+   A relation /R/ on /A/ is *pre-order* if /R/ is transitive and reflexive.
+
+   A relation /R/ on /A/ is *strict partial order* if /R/ is transitive and irreflexive.
+   A relation /R/ on /A/ is *partial order* if /R/ is transitive, reflexive, and antisymmetric.
+
+** Relations as Sets of Pairs
+
+   =ys@(y:ys')= allows =ys= to refer to the non-empty list (y:ys').
+
+   #+BEGIN_SRC haskell :tangle src/SetOrd.hs
+     module SetOrd
+         ( Set(..), emptySet, isEmpty, inSet, subSet, insertSet, deleteSet, powerSet, takeSet, (!!!), list2set, unionSet
+         ) where
+
+     import Data.List (sort)
+
+     {-- Sets implemented as ordered lists without duplicates --}
+
+     newtype Set a = Set [a] deriving (Eq, Ord)
+
+     instance (Show a) => Show (Set a) where
+       showsPrec _ (Set s) str = showSet s str
+
+     showSet [] str = showString "{}" str
+     showSet (x:xs) str = showChar '{' (shows x (show1 xs str))
+       where show1 [] str = showChar '}' str
+             show1 (x:xs) str = showChar ',' (shows x (show1 xs str))
+
+     emptySet :: Set a
+     emptySet = Set []
+
+     isEmpty :: Set a -> Bool
+     isEmpty (Set []) = True
+     isEmpty _ = False
+
+     inSet :: (Ord a) => a -> Set a -> Bool
+     inSet x (Set s) = elem x (takeWhile (<= x) s)
+
+     subSet :: (Ord a) => Set a -> Set a -> Bool
+     subSet (Set []) _ = True
+     subSet (Set (x:xs)) set = (inSet x set) && subSet (Set xs) set
+
+     insertSet :: (Ord a) => a -> Set a -> Set a
+     insertSet x (Set s) = Set (insertList x s)
+
+     insertList x [] = [x]
+     insertList x ys@ (y:ys') = case compare x y of
+                                 GT -> y : insertList x ys'
+                                 EQ -> ys
+                                 _ -> x : ys
+
+     deleteSet :: Ord a => a -> Set a -> Set a
+     deleteSet x (Set s) = Set (deleteList x s)
+
+     deleteList x [] = []
+     deleteList x ys@ (y:ys') = case compare x y of
+                                 GT -> y : deleteList x ys'
+                                 EQ -> ys'
+                                 _ -> ys
+
+     list2set :: Ord a => [a] -> Set a
+     list2set [] = Set []
+     -- list2set (x:xs) = insertSet x (list2set xs)
+     list2set xs = Set (foldr insertList [] xs)
+
+     powerSet :: Ord a => Set a -> Set (Set a)
+     powerSet (Set xs) =
+       Set (sort (map (\xs -> (list2set xs)) (powerList xs)))
+
+     powerList :: [a] -> [[a]]
+     powerList [] = [[]]
+     powerList (x:xs) = (powerList xs) ++ (map (x:) (powerList xs))
+
+     takeSet :: Eq a => Int -> Set a -> Set a
+     takeSet n (Set xs) = Set (take n xs)
+
+     infixl 9 !!!
+     (!!!) :: Eq a => Set a -> Int -> a
+     (Set xs) !!! n = xs !! n
+
+     unionSet :: (Ord a) => Set a -> Set a -> Set a
+     unionSet (Set []) set2 = set2
+     unionSet (Set (x:xs)) set2 = insertSet x (unionSet (Set xs) set2)
+   #+END_SRC
+
+   Now we can define a type for Relations in terms of Ordered Sets:
+
+   #+BEGIN_SRC haskell
+   type Rel a = Set (a,a)
+   #+END_SRC
+
+   A Relation's domain:
+
+   #+BEGIN_SRC haskell
+     domR :: Ord a => Rel a -> Set a
+     domR (Set r) = list2set [x | (x, _) <- r]
+   #+END_SRC
+
+   and the range:
+
+   #+BEGIN_SRC haskell
+     ranR :: Ord a => Rel a -> Set a
+     ranR (Set r) = list2set [y | (_, y) <- r]
+   #+END_SRC
+
+   the identity relation $\Delta_A$ over a set /A/:
+
+   #+BEGIN_SRC haskell
+     idR :: Ord a => Set a -> Rel a
+     idR (Set xs) = Set [(x, x) | x <- xs]
+   #+END_SRC
+
+   A function to create an inverse Relation:
+
+   #+BEGIN_SRC haskell
+     invR :: Ord a => Rel a -> Rel a
+     invR (Set []) = (Set [])
+     invR (Set ((x, y):r)) = insertSet (y, x) (invR (Set r))
+   #+END_SRC
+
+** Implementing Relations as Functions
+
+   The property of dividing the number 102, giving the set:
+   \begin{equation}
+   \left\{ d \in \mathbb{N}^{+} | ~ d \mbox{ divides } 102 \right\} = \left\{ 1, 2, 3, 6, 17, 34, 51, 102 \right\}
+   \end{equation}
+
+   #+BEGIN_SRC haskell
+     divides :: Integer -> Integer -> Bool
+     divides d n | d == 0 = error "divides: zero divisor"
+                 | otherwise = (rem n d) == 0
+   #+END_SRC
+
+   =(`divides` 102)= can be used as shorthand for =flip divides 102= where flip can be defined as:
+
+   #+BEGIN_SRC haskell :tangle no
+     flip :: (a -> b -> c) -> b -> a -> c
+     flip f x y = f y x
+   #+END_SRC
+
+   #+BEGIN_SRC haskell :tangle no
+     filter (`divides` 102) [1..300]
+   #+END_SRC
+
+   #+BEGIN_SRC haskell
+     type Rel' a = a -> a -> Bool
+
+     emptyR' :: Rel' a
+     emptyR' = \ _ _ -> False
+
+     list2rel' :: Eq a => [(a, a)] -> Rel' a
+     list2rel' xys = \ x y -> elem (x, y) xys
+   #+END_SRC
+
+   Composition:
+
+   #+BEGIN_SRC haskell
+     compR' :: [a] -> Rel' a -> Rel' a -> Rel' a
+     compR' xs r s x y = or [r x z && s z y | z <- xs]
+   #+END_SRC

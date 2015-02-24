@@ -1,0 +1,262 @@
+#+PROPERTY: tangle src/ch2.hs
+
+* Chapter 2
+  # Tangle with C-c C-x v t   (org-babel-tangle)
+  #   or with F6
+
+#+BEGIN_SRC haskell
+  {-# LANGUAGE FlexibleInstances #-}
+  module CH2
+         where
+
+  main = do
+    putStrLn "** Loaded **"
+#+END_SRC
+
+** Logical Connectives
+
+   #+BEGIN_SRC haskell
+     infix 1 ==>
+
+     (==>) :: Bool -> Bool -> Bool
+     True  ==> x = x
+     False ==> x = True
+
+     infix 1 <=>
+
+     (<=>) :: Bool -> Bool -> Bool
+     x <=> y = x == y
+   #+END_SRC
+
+   # Convert mathematical notation from entities to utf with:
+   #   C-c C-x \
+   # (org-entity-help)
+   # \not \land \lor \rarr \rArr \hArr
+   \not P \land ((P \rArr Q) \hArr \not(Q \land \not P))
+
+   #+BEGIN_SRC haskell
+     p = True
+     q = False
+
+     formula1 = (not p) && (p ==> q) <=> not (q && (not p))
+   #+END_SRC
+
+   In the above expression, =p= and =q= are taken as constants.  In
+   this expression, they are now arguments.
+
+   #+BEGIN_SRC haskell
+     formula2 p q = ((not p) && (p ==> q) <=> not (q && (not p)))
+   #+END_SRC
+
+   Evaluating their types gives the expected:
+   #+BEGIN_EXAMPLE
+   *CH2> :t formula1
+   formula1 :: Bool
+   *CH2> :t formula2
+   formula2 :: Bool -> Bool -> Bool
+   #+END_EXAMPLE
+
+   Here is a validity check for the validity of a given "proposition
+   function":
+   #+BEGIN_SRC haskell
+     valid1 :: (Bool -> Bool) -> Bool
+     valid1 bf = (bf True) && (bf False)
+   #+END_SRC
+
+   Given a function implementing the formula (P \lor \not P) expressing the
+   principle of excluded middle (/teritum non datur/):
+   #+BEGIN_SRC haskell
+     excluded_middle :: Bool -> Bool
+     excluded_middle p = p || not p
+   #+END_SRC
+
+   To test the formula, consider the cases /P/ := *t* and /P/ := *f*
+   which should be *t* in both cases.
+
+   #+BEGIN_SRC haskell :tangle no
+     valid1 excluded_middle -- True
+   #+END_SRC
+
+   Now a validity check for propositions of two arguments:
+   #+BEGIN_SRC haskell
+     valid2 :: (Bool -> Bool -> Bool) -> Bool
+     valid2 bf =    (bf True True)
+                 && (bf True False)
+                 && (bf False True)
+                 && (bf False False)
+   #+END_SRC
+
+   #+BEGIN_SRC haskell
+     form1 p q = p ==> (q ==> p)
+     form2 p q = (p ==> q) ==> p
+   #+END_SRC
+
+   Another way to define the validator, this time for three and four
+   arguments:
+   #+BEGIN_SRC haskell
+     valid3 :: (Bool -> Bool -> Bool -> Bool) -> Bool
+     valid3 bf = and [bf p q r | p <- [True, False],
+                                 q <- [True, False],
+                                 r <- [True, False]]
+
+     valid4 :: (Bool -> Bool -> Bool -> Bool -> Bool) -> Bool
+     valid4 bf = and [bf p q r s | p <- [True, False],
+                                   q <- [True, False],
+                                   r <- [True, False],
+                                   s <- [True, False]]
+   #+END_SRC
+
+   So, they used list comprehensions to generate all casees in the
+   truth tables.  Clever.
+
+   De Morgan's First Law:          \not (P \land Q) \hArr (\not P \lor \not Q)
+
+   #+BEGIN_SRC haskell :tangle no
+     (not (p && q)) <=> not p || not q
+   #+END_SRC
+
+** Logical Equivalence
+
+   #+BEGIN_SRC haskell
+     logEquiv2 :: (Bool -> Bool -> Bool) -> (Bool -> Bool -> Bool) -> Bool
+     logEquiv2 bf1 bf2 = and [(bf1 p q) <=> (bf2 p q) | p <- [True, False],
+                                                        q <- [True, False]]
+   #+END_SRC
+
+   We'll need that implementation of \oplus (xor) from earlier:
+   #+BEGIN_SRC haskell
+     infixr 2 <+>
+
+     -- exclusive OR
+     (<+>) :: Bool -> Bool -> Bool
+     x <+> y = x /= y
+
+     formula3 p q = p
+     formula4 p q = (p <+> q) <+> q
+   #+END_SRC
+
+** The Quadratic Equation
+
+   A Haskell function to solve the quadratic equation:
+   \begin{equation}
+   x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+   \end{equation}
+
+   #+BEGIN_SRC haskell
+     solveQE :: (Float, Float, Float) -> (Float, Float)
+     solveQE = \ (a, b, c) -> if a == 0 then error "not quadratic"
+                              else let d = b^2 - 4*a*c in
+                                    if d < 0 then error "no Real solutions"
+                              else
+                                      ((- b + sqrt d) / 2*a,
+                                       (- b - sqrt d) / 2*a)
+   #+END_SRC
+
+   To solve $x^2 - x - 1 = 0$
+   #+BEGIN_SRC haskell :tangle no
+     solveQE (1, -1, -1)
+     -- (1.618034,-0.618034)
+   #+END_SRC
+
+   Giving an approximation of the golden ratio: $\frac{1 + \sqrt{5}}{2} \approx 1.618034$
+
+** Primes
+
+   A definition of prime, using m|n for `m divides n`:
+   \begin{equation}
+   n > 1 \land \neg{\exists m} (1 < m < n \land m | n)
+   \end{equation}
+
+   Also expressible as:
+   \begin{equation}
+   \begin{split}
+   n > 1 \land \forall m ((1 < m < n) \Rightarrow \neg{m|n}) \\
+   P(n) :\equiv n > 1 \land \forall m ((1 < m < n) \Rightarrow \neg{m|n})
+   \end{split}
+   \end{equation}
+   where :\equiv means `by definition equivilent to.`
+
+   This can be extended to:
+   \begin{equation}
+   P(n) :\equiv n > 1 \land \forall m ((1 < m \land m^2 \le n) \Rightarrow \neg{m|n})
+   \end{equation}
+
+** Quantifiers as Procedures
+
+   Predefined predicates in Haskell:
+   #+BEGIN_SRC haskell :tangle no
+     any, all :: (a -> Bool) -> [a] -> Bool
+     any p =  or . map p
+     all p = and . map p
+   #+END_SRC
+
+   The book goes on to define =every= and =some= as:
+   #+BEGIN_SRC haskell :tangle no
+     every, some :: [a] -> (a -> Bool) -> Bool
+     every xs p = all p xs
+     some  xs p = any p xs
+   #+END_SRC
+
+   which can, of course, be defined instead as:
+   #+BEGIN_SRC haskell
+     every = flip all
+     some  = flip any
+   #+END_SRC
+
+** Primes Again
+
+   From chapter 1, a definition for prime numbers:
+   #+BEGIN_SRC haskell
+     prime :: Integer -> Bool
+     prime n
+       | n < 1     = error "not a positive integer"
+       | n == 1    = False
+       | otherwise = ldp n == n where
+           ldp = ldpf primes
+           ldpf (p:ps) m
+             | rem m p == 0 = p
+             | p^2 > m      = m
+             | otherwise    = ldpf ps m
+           primes = 2 : filter prime [3..]
+   #+END_SRC
+
+   The Sieve of Eratosthenes:
+
+   #+BEGIN_SRC haskell
+     sieve :: [Integer] -> [Integer]
+     sieve (0:xs) = sieve xs
+     sieve (n:xs) = n : sieve (mark xs 1 n)
+       where
+         mark :: [Integer] -> Integer -> Integer -> [Integer]
+         mark (y:ys) k m | k == m    = 0 : (mark ys 1 m)
+                         | otherwise = y : (mark ys (k+1) m)
+
+     primes :: [Integer]
+     primes = sieve [2..]
+   #+END_SRC
+
+   Mersenne Primes:
+
+   #+BEGIN_SRC haskell
+     mersenne = [(p, 2^p - 1) | p <- primes, prime (2^p - 1)]
+   #+END_SRC
+
+** Perfect Numbers
+
+   A function to derive the proper divisors of the integer n:
+
+   #+BEGIN_SRC haskell
+     pdivisors :: Integer -> [Integer]
+     pdivisors n = [d | d <- [1..n], rem n d == 0]
+   #+END_SRC
+
+** Prime Pairs
+
+   #+BEGIN_SRC haskell
+     primePairs :: [(Integer, Integer)]
+     primePairs = pairs primes
+       where
+         pairs (x:y:xys) | x + 2 == y = (x, y) : pairs (y:xys)
+                         | otherwise = pairs (y:xys)
+
+   #+END_SRC

@@ -1,0 +1,12 @@
+#+PROPERTY: tangle src/ch6.hs
+
+* Chapter 6: Functions
+
+  # Tangle with C-c C-x v t   (org-babel-tangle)
+  #   or with F6
+
+  #+BEGIN_SRC haskell
+    module CH6 where
+
+    import Data.List
+  #+end_src

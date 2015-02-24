@@ -1,0 +1,17 @@
+* Book Notes
+
+  Notes taken while reading: _The Haskell Road to Logic, Maths and
+  Programming_ Second Edition, by Kees Doets and Jan van Eijck.
+
+** Using these Notes
+
+   The source code embedded in the notes can be extracted by
+   "tangling."  Tangle the code with the Emacs command
+   =(org-babel-tangle)= bound by default to =C-c C-x v t=.  I've bound
+   it also to =F6=.
+
+   Some of the notes contain mathematical notation.  This is most
+   easily read after exporting the file to html.  The default command
+   for this is bound to =C-c C-e h h=.  Once you've entered =C-c C-e=
+   (for "export"), you'll start to see options for other export
+   formats.

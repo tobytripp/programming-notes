@@ -17,12 +17,20 @@
 <p class="view"><a href="https://github.com/tobytripp/programming-notes">View the Project on GitHub <small>tobytripp/programming-notes</small></a></p>
 #+END_HTML
 
+* [[file:book/index.org][The Haskell Road to Logic, Maths and Programming]]
+:PROPERTIES:
+:HTML_CONTAINER: section
+:END:
+  [2015-02-23 Mon]
+
+  Notes while reading along to the book.
+
 
 * [[file:alchemy.org][Alchemy]]
 :PROPERTIES:
 :HTML_CONTAINER: section
 :END:
-  [2015-02-23 Mon]
+  [2015-02-21 Sat]
 
   An exploration of Logic Programming in Prolog, with a diversion to
   Haskell.

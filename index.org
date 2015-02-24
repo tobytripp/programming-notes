@@ -1,0 +1,45 @@
+#+SETUPFILE: ~/Code/Notes/main.orgsetup
+
+# Export to HTML with:
+#   C-c C-e h h     (org-html-export-to-html)
+
+
+# Theme by [[https://github.com/orderedlist][orderedlist]].
+
+* Programming Notes
+:PROPERTIES:
+:HTML_CONTAINER: header
+:HTML_CONTAINER_CLASS: testing
+:END:
+  Code and Notes on things that interested me at least once.
+
+#+BEGIN_HTML
+<p class="view"><a href="https://github.com/tobytripp/programming-notes">View the Project on GitHub <small>tobytripp/programming-notes</small></a></p>
+#+END_HTML
+
+
+* [[file:alchemy.org][Alchemy]]
+:PROPERTIES:
+:HTML_CONTAINER: section
+:END:
+  [2015-02-23 Mon]
+
+  An exploration of Logic Programming in Prolog, with a diversion to
+  Haskell.
+
+  #+BEGIN_SRC prolog :tangle no
+    potion( IngredientA, IngredientB, Effect ) :-
+        effect( IngredientA, Effect ),
+        effect( IngredientB, Effect ),
+        IngredientA \= IngredientB.
+  #+END_SRC
+
+  #+BEGIN_SRC haskell :tangle src/alchemy.hs
+    potion :: Ingredient -> Ingredient -> [Effect]
+    potion a b = [e |
+                  (i, e) <- facts,
+                  (i', e') <- facts,
+                  e == e',
+                  i == a,
+                  i' == b]
+   #+END_SRC

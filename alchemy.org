@@ -1,18 +1,25 @@
-#+TITLE: Code Alchemy
-#+AUTHOR: Toby Tripp
-#+OPTIONS: H:3 num:nil toc:nil
-#+OPTIONS: html-style:t html5-fancy:t
-#+HTML_HEAD_EXTRA: <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-#+HTML_HEAD_EXTRA: <link rel="stylesheet" href="css/style.css">
-#+HTML_CONTAINER: div
-#+HTML_DOCTYPE: html5
+#+SETUPFILE: ~/Code/Notes/main.orgsetup
 
 # Export to HTML with:
 #   C-c C-e h h     (org-html-export-to-html)
 # Tangle with C-c C-x v t   (org-babel-tangle)
 #   or with F6
+* Programming Notes
+:PROPERTIES:
+:HTML_CONTAINER: header
+:HTML_CONTAINER_CLASS: testing
+:END:
+  Code and Notes on things that interested me at least once.
+
+#+BEGIN_HTML
+<p class="view"><a href="https://github.com/tobytripp/programming-notes">View the Project on GitHub <small>tobytripp/programming-notes</small></a></p>
+#+END_HTML
+
 
 * Skyrim Potion Mixing
+:PROPERTIES:
+:HTML_CONTAINER: section
+:END:
 
 ** Prolog
 
@@ -693,7 +700,8 @@
    A potion can be created if two ingredients are combined that share at least one effect:
 
    #+BEGIN_SRC prolog :tangle src/alchemy.pl
-     potion( IngredientA, IngredientB ) :- potion( IngredientA, IngredientB, _ ).
+     potion( IngredientA, IngredientB ) :-
+       potion( IngredientA, IngredientB, _ ).
 
      potion( IngredientA, IngredientB, Effect ) :-
          effect( IngredientA, Effect ),
@@ -1408,15 +1416,20 @@
 
     #+BEGIN_SRC haskell :tangle no
     *Alchemy> withEffect "Frenzy"
-    ["Blisterwort","Falmer Ear","Fly Amanita","Hagraven Feathers","Human Heart","Troll Fat"]
+    ["Blisterwort","Falmer Ear","Fly Amanita","Hagraven Feathers",
+     "Human Heart","Troll Fat"]
     #+END_SRC
 
-
 ** Footnotes
-
+:PROPERTIES:
+:HTML_CONTAINER: section
+:END:
 [fn:2] [[http://www.learnprolognow.org][/Learn Prolog Now/]]
 
 ** License
+:PROPERTIES:
+:HTML_CONTAINER: section
+:END:
 #+BEGIN_HTML
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
 #+END_HTML

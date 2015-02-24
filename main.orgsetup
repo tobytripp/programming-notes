@@ -1,0 +1,11 @@
+# -*- mode: org -*-
+#+TITLE:
+#+AUTHOR: Toby Tripp
+#+OPTIONS: H:3 num:nil toc:nil
+#+OPTIONS: html-style:t html5-fancy:t
+#+OPTIONS: html-postamble:nil html-postamble-format:"%a foo"
+#+HTML_HEAD_EXTRA: <link rel="stylesheet" href="stylesheets/styles.css">
+#+HTML_HEAD_EXTRA: <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+#+HTML_HEAD_EXTRA: <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+#+HTML_DOCTYPE: html5
+#+HTML_CONTAINER_CLASS: wrapper

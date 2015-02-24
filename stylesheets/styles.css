@@ -160,7 +160,7 @@ header ul a strong {
   color:#222;
 }
 
-section, div#footnotes, .outline-1, .outline-2, .outline-3, .outline-4 {
+section, div#footnotes {
   width:500px;
   float:right;
   padding-bottom:50px;

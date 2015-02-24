@@ -2,7 +2,10 @@
 #+PROPERTY: tangle src/ch6.hs
 
 * Chapter 6: Functions
-
+:PROPERTIES:
+:HTML_CONTAINER: section
+:END:
+  
   # Tangle with C-c C-x v t   (org-babel-tangle)
   #   or with F6
 

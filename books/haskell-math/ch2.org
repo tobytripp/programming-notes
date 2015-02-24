@@ -10,6 +10,10 @@
   Programming_ Second Edition, by Kees Doets and Jan van Eijck.
 
 * Chapter 2
+:PROPERTIES:
+:HTML_CONTAINER: section
+:END:
+  
   # Tangle with C-c C-x v t   (org-babel-tangle)
   #   or with F6
 

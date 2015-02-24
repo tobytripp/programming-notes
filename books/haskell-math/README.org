@@ -1,4 +1,4 @@
-#+SETUPFILE: ~/Code/Notes/main.orgsetup
+#+SETUPFILE: ./math.orgsetup
 
 * Book Notes
 :PROPERTIES:

@@ -30,6 +30,6 @@
 :END:
 
    - [[file:ch2.org][2]]
-   - [[file:ch4.org][4]]
-   - [[file:ch5.org][5]]
-   - [[file:ch6.org][6]]
+   - [[file:ch4.org][4: Sets Types and Lists]]
+   - [[file:ch5.org][5: Relations]]
+   - [[file:ch6.org][6: Functions]]

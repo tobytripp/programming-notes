@@ -8,7 +8,7 @@
   Notes taken while reading: _The Haskell Road to Logic, Maths and
   Programming_ Second Edition, by Kees Doets and Jan van Eijck.
 
-** Using these Notes
+* Using these Notes
 :PROPERTIES:
 :HTML_CONTAINER: section
 :END:
@@ -29,7 +29,7 @@
 :HTML_CONTAINER: section
 :END:
 
-   - [[file:ch2.org][2]]
-   - [[file:ch4.org][4: Sets Types and Lists]]
-   - [[file:ch5.org][5: Relations]]
-   - [[file:ch6.org][6: Functions]]
+   + [[file:ch2.org][2]]
+   + [[file:ch4.org][4: Sets Types and Lists]]
+   + [[file:ch5.org][5: Relations]]
+   + [[file:ch6.org][6: Functions]]

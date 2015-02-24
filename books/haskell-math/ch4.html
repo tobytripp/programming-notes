@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<!-- 2015-02-23 Mon 20:22 -->
+<meta  charset="utf-8">
+<meta  name="generator" content="Org-mode">
+<meta  name="author" content="Toby Tripp">
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" href="stylesheets/styles.css">
+<link rel="stylesheet" href="stylesheets/pygment_trac.css">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="wrapper">
+<h1 class="title"></h1>
+
+<header id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Book Notes</h2>
+<div class="outline-text-2" id="text-1">
+
+<p>
+Notes taken while reading: <span class="underline">The Haskell Road to Logic, Maths and
+Programming</span> Second Edition, by Kees Doets and Jan van Eijck.
+</p>
+</div>
+</header>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Chapter 4: Sets Types and Lists</h2>
+<div class="outline-text-2" id="text-2">
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #586e75;">{-# LANGUAGE FlexibleInstances #-}</span>
+<span style="color: #859900; font-weight: bold;">module</span> <span style="color: #b58900;">CH4</span> <span style="color: #859900; font-weight: bold;">where</span>
+
+<span style="color: #859900; font-weight: bold;">import</span> <span style="color: #b58900;">Data.List</span>
+<span style="color: #859900; font-weight: bold;">import</span> <span style="color: #b58900;">DB</span>
+
+<span style="color: #268bd2;">main</span> <span style="color: #268bd2;">=</span> <span style="color: #859900; font-weight: bold;">do</span>
+  putStrLn <span style="color: #2aa198;">"** Loaded **"</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #268bd2;">naturals</span> <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">[</span>0<span style="color: #268bd2;">..</span><span style="color: #f5deb3;">]</span>
+
+<span style="color: #268bd2;">evens1</span> <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">[</span>n <span style="color: #268bd2;">|</span> n <span style="color: #268bd2;">&lt;-</span> naturals, even n<span style="color: #f5deb3;">]</span>
+<span style="color: #268bd2;">odds1</span>  <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">[</span>n <span style="color: #268bd2;">|</span> n <span style="color: #268bd2;">&lt;-</span> naturals, odd n<span style="color: #f5deb3;">]</span>
+
+<span style="color: #268bd2;">evens2</span> <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">[</span>2<span style="color: #268bd2;">*</span>n <span style="color: #268bd2;">|</span> n <span style="color: #268bd2;">&lt;-</span> naturals<span style="color: #f5deb3;">]</span>
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">Paradoxes, Types, and Type Classes</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+An example program for which it cannot be proven to halt:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #268bd2;">run</span> <span style="color: #268bd2;">::</span> <span style="color: #b58900;">Integer</span> <span style="color: #268bd2;">-&gt;</span> <span style="color: #f5deb3;">[</span><span style="color: #b58900;">Integer</span><span style="color: #f5deb3;">]</span>
+<span style="color: #268bd2;">run</span> n <span style="color: #268bd2;">|</span> n <span style="color: #268bd2;">&lt;</span> 1 <span style="color: #268bd2;">=</span> error <span style="color: #2aa198;">"argument not positive"</span>
+      <span style="color: #268bd2;">|</span> n <span style="color: #268bd2;">==</span> 1 <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">[</span>1<span style="color: #f5deb3;">]</span>
+      <span style="color: #268bd2;">|</span> even n <span style="color: #268bd2;">=</span> n <span style="color: #b58900;">:</span> run <span style="color: #f5deb3;">(</span>div n 2<span style="color: #f5deb3;">)</span>
+      <span style="color: #268bd2;">|</span> odd n  <span style="color: #268bd2;">=</span> n <span style="color: #b58900;">:</span> run <span style="color: #f5deb3;">(</span>3<span style="color: #268bd2;">*</span>n <span style="color: #268bd2;">+</span> 1<span style="color: #f5deb3;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">List Comprehensions</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+Defining a database type, <code>DB</code>:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #859900; font-weight: bold;">module</span> <span style="color: #b58900;">DB</span> <span style="color: #859900; font-weight: bold;">where</span>
+<span style="color: #859900; font-weight: bold;">type</span> <span style="color: #b58900;">WordList</span> <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">[</span><span style="color: #b58900;">String</span><span style="color: #f5deb3;">]</span>
+<span style="color: #859900; font-weight: bold;">type</span> <span style="color: #b58900;">DB</span> <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">[</span><span style="color: #b58900;">WordList</span><span style="color: #f5deb3;">]</span>
+
+<span style="color: #268bd2;">db</span> <span style="color: #268bd2;">::</span> <span style="color: #b58900;">DB</span>
+<span style="color: #268bd2;">db</span> <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">[</span>
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Romeo"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Jack Dawson"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Sean McGuire"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Vincent Vega"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Mr White"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Winston Wolf"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Mia"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Juliet"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Jimmie"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Mr Brown"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Dallas"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Ellen Ripley"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Bishop"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Deckard"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Rachael"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Roy Batty"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Vito Corleone"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Michael Corleone"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Tom Hagen"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"William Somerset"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"David Mills"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Louise"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Thelma"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Max Cady"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Will Hunting"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Sam Bowden"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Leigh Bowden"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Danielle Bowden"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"John Doe"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Verbal Kint"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Dean Keaton"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"John Murdoch"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Frank Bumstead"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Doctor Schreber"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"James Cole"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Kathryn Railly"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Jeffrey Goines"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"John McClane"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Hans Gruber"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Hannibal Lecter"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Clarice Starling"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Castor Troy"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Sean Archer"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Mark Renton"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Francis Begbie"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Sidney Prescott"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Gale Weathers"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Billy Loomis"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Ben Sanderson"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Sera"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Marge Gunderson"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Carl Showalter"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Ethan Hunt"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Jim Phelps"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Claire Phelps"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Vincent Freeman"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Irene Cassini"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Indiana Jones"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Sallah"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Marion Ravenwood"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Richard Kimble"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Samuel Gerard"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Charles Nichols"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Kay"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Jay"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Laurel"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Mr Pink"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Eliot Ness"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Jim Malone"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"George Stone"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Al Capone"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Rose DeWit Bukater"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Connor MacLeod"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Ramirez"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Colonel Kurtz"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Captain Willard"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Lieutenant Kilgore"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Gordon Gekko"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Bud Fox"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Carl Fox"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Chris"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Big Harold"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"character"</span>, <span style="color: #2aa198;">"Sgt. Barnes"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Apocalypse Now"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"The Untouchables"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Men in Black"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Raiders of the Lost Ark"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Gattaca"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"The Fugitive"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Blade Runner"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Alien"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Aliens"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Titanic"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Good Will Hunting"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Pulp Fiction"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Reservoir Dogs"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Romeo and Juliet"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"The Godfather"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"The Godfather II"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Seven"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Thelma and Louise"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Cape Fear"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"The Usual Suspects"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Dark City"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Die Hard"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Silence of the Lambs"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Face/Off"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Trainspotting"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Scream"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Leaving Las Vegas"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Fargo"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Mission Impossible"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Twelve Monkeys"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Highlander"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Wall Street"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"movie"</span>, <span style="color: #2aa198;">"Platoon"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Andy Garcia"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Sean Connery"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Kevin Costner"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"John Rhys-Davies"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Karen Allen"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Tommy Lee Jones"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Jeroen Krabbe"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Will Smith"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Linda Fiorentino"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Ethan Hawke"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Leonardo DiCaprio"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"John Travolta"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Robin Williams"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Harvey Keitel"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Quentin Tarantino"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Lance Henriksen"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Tom Skerritt"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Rutger Hauer"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Harrison Ford"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Marlon Brando"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Al Pacino"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Robert Duvall"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Morgan Freeman"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Brad Pitt"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Robert De Niro"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Claire Danes"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Uma Thurman"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Sigourney Weaver"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Sean Young"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Susan Sarandon"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Geena Davis"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Matt Damon"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Nick Nolte"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Jessica Lange"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Juliette Lewis"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Kevin Spacey"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Gabriel Byrne"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Rufus Sewell"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"William Hurt"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Kiefer Sutherland"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Bruce Willis"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Alan Rickman"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Anthony Hopkins"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Jodie Foster"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Nicolas Cage"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Ewan McGregor"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Robert Carlyle"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Neve Campbell"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Courteney Cox"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Skeet Ulrich"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Elisabeth Shue"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Frances McDormand"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Steve Buscemi"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Tom Cruise"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Jon Voight"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Emmanuelle Beart"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Madeleine Stowe"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Christopher Lambert"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Martin Sheen"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Charlie Sheen"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Michael Douglas"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Forest Whitaker"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"actor"</span>, <span style="color: #2aa198;">"Tom Berenger"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"director"</span>, <span style="color: #2aa198;">"Andrew Niccol"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"director"</span>, <span style="color: #2aa198;">"Barry Sonnenfeld"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"director"</span>, <span style="color: #2aa198;">"Andrew Davis"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"director"</span>, <span style="color: #2aa198;">"Steven Spielberg"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"director"</span>, <span style="color: #2aa198;">"James Cameron"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"director"</span>, <span style="color: #2aa198;">"Ridley Scott"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"director"</span>, <span style="color: #2aa198;">"Gus Van Sant"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"director"</span>, <span style="color: #2aa198;">"Baz Luhrmann"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"director"</span>, <span style="color: #2aa198;">"Francis Ford Coppola"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"director"</span>, <span style="color: #2aa198;">"David Fincher"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"director"</span>, <span style="color: #2aa198;">"Martin Scorsese"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"director"</span>, <span style="color: #2aa198;">"Bryan Singer"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"director"</span>, <span style="color: #2aa198;">"Alex Proyas"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"director"</span>, <span style="color: #2aa198;">"John McTiernan"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"director"</span>, <span style="color: #2aa198;">"Jonathan Demme"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"director"</span>, <span style="color: #2aa198;">"John Woo"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"director"</span>, <span style="color: #2aa198;">"Danny Boyle"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"director"</span>, <span style="color: #2aa198;">"Wes Craven"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"director"</span>, <span style="color: #2aa198;">"Mike Figgis"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"director"</span>, <span style="color: #2aa198;">"Brian De Palma"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"director"</span>, <span style="color: #2aa198;">"Joel Coen"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"director"</span>, <span style="color: #2aa198;">"Terry Gilliam"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"director"</span>, <span style="color: #2aa198;">"Russell Mulcahy"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"director"</span>, <span style="color: #2aa198;">"Oliver Stone"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Blade Runner"</span>, <span style="color: #2aa198;">"1982"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Alien"</span>, <span style="color: #2aa198;">"1979"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Aliens"</span>, <span style="color: #2aa198;">"1986"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Titanic"</span>, <span style="color: #2aa198;">"1997"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Good Will Hunting"</span>, <span style="color: #2aa198;">"1997"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Pulp Fiction"</span>, <span style="color: #2aa198;">"1994"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Reservoir Dogs"</span>, <span style="color: #2aa198;">"1992"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Romeo and Juliet"</span>, <span style="color: #2aa198;">"1996"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"The Godfather"</span>, <span style="color: #2aa198;">"1972"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"The Godfather II"</span>, <span style="color: #2aa198;">"1974"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Seven"</span>, <span style="color: #2aa198;">"1995"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Thelma and Louise"</span>, <span style="color: #2aa198;">"1991"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Cape Fear"</span>, <span style="color: #2aa198;">"1991"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"The Usual Suspects"</span>, <span style="color: #2aa198;">"1995"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Dark City"</span>, <span style="color: #2aa198;">"1998"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Die Hard"</span>, <span style="color: #2aa198;">"1988"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Face/Off"</span>, <span style="color: #2aa198;">"1997"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Silence of the Lambs"</span>, <span style="color: #2aa198;">"1991"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Trainspotting"</span>, <span style="color: #2aa198;">"1996"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Scream"</span>, <span style="color: #2aa198;">"1996"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Leaving Las Vegas"</span>, <span style="color: #2aa198;">"1995"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Fargo"</span>, <span style="color: #2aa198;">"1996"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Mission Impossible"</span>, <span style="color: #2aa198;">"1996"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Twelve Monkeys"</span>, <span style="color: #2aa198;">"1995"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Gattaca"</span>, <span style="color: #2aa198;">"1997"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Raiders of the Lost Ark"</span>, <span style="color: #2aa198;">"1981"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"The Fugitive"</span>, <span style="color: #2aa198;">"1993"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Men in Black"</span>, <span style="color: #2aa198;">"1997"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"The Untouchables"</span>, <span style="color: #2aa198;">"1987"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Highlander"</span>, <span style="color: #2aa198;">"1986"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Apocalypse Now"</span>, <span style="color: #2aa198;">"1979"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Wall Street"</span>, <span style="color: #2aa198;">"1987"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"Platoon"</span>, <span style="color: #2aa198;">"1986"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #2aa198;">"The Truman Show"</span>, <span style="color: #2aa198;">"1998"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Brian De Palma"</span>, <span style="color: #2aa198;">"The Untouchables"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"James Cameron"</span>, <span style="color: #2aa198;">"Titanic"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"James Cameron"</span>, <span style="color: #2aa198;">"Aliens"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Ridley Scott"</span>, <span style="color: #2aa198;">"Alien"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Ridley Scott"</span>, <span style="color: #2aa198;">"Blade Runner"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Ridley Scott"</span>, <span style="color: #2aa198;">"Thelma and Louise"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Gus Van Sant"</span>, <span style="color: #2aa198;">"Good Will Hunting"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Quentin Tarantino"</span>, <span style="color: #2aa198;">"Pulp Fiction"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Quentin Tarantino"</span>, <span style="color: #2aa198;">"Reservoir Dogs"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Baz Luhrmann"</span>, <span style="color: #2aa198;">"Romeo and Juliet"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Francis Ford Coppola"</span>, <span style="color: #2aa198;">"The Godfather"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Francis Ford Coppola"</span>, <span style="color: #2aa198;">"The Godfather II"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"David Fincher"</span>, <span style="color: #2aa198;">"Seven"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Martin Scorsese"</span>, <span style="color: #2aa198;">"Cape Fear"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Bryan Singer"</span>, <span style="color: #2aa198;">"The Usual Suspects"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Alex Proyas"</span>, <span style="color: #2aa198;">"Dark City"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"John McTiernan"</span>, <span style="color: #2aa198;">"Die Hard"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Jonathan Demme"</span>, <span style="color: #2aa198;">"Silence of the Lambs"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"John Woo"</span>, <span style="color: #2aa198;">"Face/Off"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Danny Boyle"</span>, <span style="color: #2aa198;">"Trainspotting"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Wes Craven"</span>, <span style="color: #2aa198;">"Scream"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Mike Figgis"</span>, <span style="color: #2aa198;">"Leaving Las Vegas"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Joel Coen"</span>, <span style="color: #2aa198;">"Fargo"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Brian De Palma"</span>, <span style="color: #2aa198;">"Mission Impossible"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Terry Gilliam"</span>, <span style="color: #2aa198;">"Twelve Monkeys"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Andrew Niccol"</span>, <span style="color: #2aa198;">"Gattaca"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Steven Spielberg"</span>, <span style="color: #2aa198;">"Raiders of the Lost Ark"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Andrew Davis"</span>, <span style="color: #2aa198;">"The Fugitive"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Barry Sonnenfeld"</span>, <span style="color: #2aa198;">"Men in Black"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Russell Mulcahy"</span>, <span style="color: #2aa198;">"Highlander"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Francis Ford Coppola"</span>, <span style="color: #2aa198;">"Apocalypse Now"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Oliver Stone"</span>, <span style="color: #2aa198;">"Wall Street"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, <span style="color: #2aa198;">"Oliver Stone"</span>, <span style="color: #2aa198;">"Platoon"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Leonardo DiCaprio"</span>, <span style="color: #2aa198;">"Romeo and Juliet"</span>, <span style="color: #2aa198;">"Romeo"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Leonardo DiCaprio"</span>, <span style="color: #2aa198;">"Titanic"</span>, <span style="color: #2aa198;">"Jack Dawson"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Robin Williams"</span>, <span style="color: #2aa198;">"Good Will Hunting"</span>, <span style="color: #2aa198;">"Sean McGuire"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"John Travolta"</span>, <span style="color: #2aa198;">"Pulp Fiction"</span>, <span style="color: #2aa198;">"Vincent Vega"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Harvey Keitel"</span>, <span style="color: #2aa198;">"Reservoir Dogs"</span>, <span style="color: #2aa198;">"Mr White"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Harvey Keitel"</span>, <span style="color: #2aa198;">"Pulp Fiction"</span>, <span style="color: #2aa198;">"Winston Wolf"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Uma Thurman"</span>, <span style="color: #2aa198;">"Pulp Fiction"</span>, <span style="color: #2aa198;">"Mia"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Quentin Tarantino"</span>, <span style="color: #2aa198;">"Pulp Fiction"</span>, <span style="color: #2aa198;">"Jimmie"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Quentin Tarantino"</span>, <span style="color: #2aa198;">"Reservoir Dogs"</span>, <span style="color: #2aa198;">"Mr Brown"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Sigourney Weaver"</span>, <span style="color: #2aa198;">"Alien"</span>, <span style="color: #2aa198;">"Ellen Ripley"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Sigourney Weaver"</span>, <span style="color: #2aa198;">"Aliens"</span>, <span style="color: #2aa198;">"Ellen Ripley"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Lance Henriksen"</span>, <span style="color: #2aa198;">"Aliens"</span>, <span style="color: #2aa198;">"Bishop"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Tom Skerritt"</span>, <span style="color: #2aa198;">"Alien"</span>, <span style="color: #2aa198;">"Dallas"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Harrison Ford"</span>, <span style="color: #2aa198;">"Blade Runner"</span>, <span style="color: #2aa198;">"Deckard"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Rutger Hauer"</span>, <span style="color: #2aa198;">"Blade Runner"</span>, <span style="color: #2aa198;">"Roy Batty"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Sean Young"</span>, <span style="color: #2aa198;">"Blade Runner"</span>, <span style="color: #2aa198;">"Rachael"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Marlon Brando"</span>, <span style="color: #2aa198;">"The Godfather"</span>, <span style="color: #2aa198;">"Vito Corleone"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Al Pacino"</span>, <span style="color: #2aa198;">"The Godfather"</span>, <span style="color: #2aa198;">"Michael Corleone"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Robert Duvall"</span>, <span style="color: #2aa198;">"The Godfather"</span>, <span style="color: #2aa198;">"Tom Hagen"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Morgan Freeman"</span>, <span style="color: #2aa198;">"Seven"</span>, <span style="color: #2aa198;">"William Somerset"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Brad Pitt"</span>, <span style="color: #2aa198;">"Seven"</span>, <span style="color: #2aa198;">"David Mills"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Robert De Niro"</span>, <span style="color: #2aa198;">"The Godfather II"</span>, <span style="color: #2aa198;">"Vito Corleone"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Al Pacino"</span>, <span style="color: #2aa198;">"The Godfather II"</span>, <span style="color: #2aa198;">"Michael Corleone"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Robert Duvall"</span>, <span style="color: #2aa198;">"The Godfather II"</span>, <span style="color: #2aa198;">"Tom Hagen"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Susan Sarandon"</span>, <span style="color: #2aa198;">"Thelma and Louise"</span>, <span style="color: #2aa198;">"Louise"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Geena Davis"</span>, <span style="color: #2aa198;">"Thelma and Louise"</span>, <span style="color: #2aa198;">"Thelma"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Robert De Niro"</span>, <span style="color: #2aa198;">"Cape Fear"</span>, <span style="color: #2aa198;">"Max Cady"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Matt Damon"</span>, <span style="color: #2aa198;">"Good Will Hunting"</span>, <span style="color: #2aa198;">"Will Hunting"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Nick Nolte"</span>, <span style="color: #2aa198;">"Cape Fear"</span>, <span style="color: #2aa198;">"Sam Bowden"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Jessica Lange"</span>, <span style="color: #2aa198;">"Cape Fear"</span>, <span style="color: #2aa198;">"Leigh Bowden"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Juliette Lewis"</span>, <span style="color: #2aa198;">"Cape Fear"</span>, <span style="color: #2aa198;">"Danielle Bowden"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Kevin Spacey"</span>, <span style="color: #2aa198;">"Seven"</span>, <span style="color: #2aa198;">"John Doe"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Kevin Spacey"</span>, <span style="color: #2aa198;">"The Usual Suspects"</span>, <span style="color: #2aa198;">"Verbal Kint"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Gabriel Byrne"</span>, <span style="color: #2aa198;">"The Usual Suspects"</span>, <span style="color: #2aa198;">"Dean Keaton"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Rufus Sewell"</span>, <span style="color: #2aa198;">"Dark City"</span>, <span style="color: #2aa198;">"John Murdoch"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"William Hurt"</span>, <span style="color: #2aa198;">"Dark City"</span>, <span style="color: #2aa198;">"Frank Bumstead"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Kiefer Sutherland"</span>, <span style="color: #2aa198;">"Dark City"</span>, <span style="color: #2aa198;">"Doctor Schreber"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Bruce Willis"</span>, <span style="color: #2aa198;">"Die Hard"</span>, <span style="color: #2aa198;">"John McClane"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Alan Rickman"</span>, <span style="color: #2aa198;">"Die Hard"</span>, <span style="color: #2aa198;">"Hans Gruber"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Anthony Hopkins"</span>, <span style="color: #2aa198;">"Silence of the Lambs"</span>, <span style="color: #2aa198;">"Hannibal Lecter"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Jodie Foster"</span>, <span style="color: #2aa198;">"Silence of the Lambs"</span>, <span style="color: #2aa198;">"Clarice Starling"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Nicolas Cage"</span>, <span style="color: #2aa198;">"Face/Off"</span>, <span style="color: #2aa198;">"Castor Troy"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"John Travolta"</span>, <span style="color: #2aa198;">"Face/Off"</span>, <span style="color: #2aa198;">"Sean Archer"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Ewan McGregor"</span>, <span style="color: #2aa198;">"Trainspotting"</span>, <span style="color: #2aa198;">"Mark Renton"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Robert Carlyle"</span>, <span style="color: #2aa198;">"Trainspotting"</span>, <span style="color: #2aa198;">"Francis Begbie"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Neve Campbell"</span>, <span style="color: #2aa198;">"Scream"</span>, <span style="color: #2aa198;">"Sidney Prescott"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Courteney Cox"</span>, <span style="color: #2aa198;">"Scream"</span>, <span style="color: #2aa198;">"Gale Weathers"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Skeet Ulrich"</span>, <span style="color: #2aa198;">"Scream"</span>, <span style="color: #2aa198;">"Billy Loomis"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Nicolas Cage"</span>, <span style="color: #2aa198;">"Leaving Las Vegas"</span>, <span style="color: #2aa198;">"Ben Sanderson"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Elisabeth Shue"</span>, <span style="color: #2aa198;">"Leaving Las Vegas"</span>, <span style="color: #2aa198;">"Sera"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Frances McDormand"</span>, <span style="color: #2aa198;">"Fargo"</span>, <span style="color: #2aa198;">"Marge Gunderson"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Steve Buscemi"</span>, <span style="color: #2aa198;">"Fargo"</span>, <span style="color: #2aa198;">"Carl Showalter"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Tom Cruise"</span>, <span style="color: #2aa198;">"Mission Impossible"</span>, <span style="color: #2aa198;">"Ethan Hunt"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Jon Voight"</span>, <span style="color: #2aa198;">"Mission Impossible"</span>, <span style="color: #2aa198;">"Jim Phelps"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Emmanuelle Beart"</span>, <span style="color: #2aa198;">"Mission Impossible"</span>, <span style="color: #2aa198;">"Claire Phelps"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Bruce Willis"</span>, <span style="color: #2aa198;">"Twelve Monkeys"</span>, <span style="color: #2aa198;">"James Cole"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Madeleine Stowe"</span>, <span style="color: #2aa198;">"Twelve Monkeys"</span>, <span style="color: #2aa198;">"Kathryn Railly"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Brad Pitt"</span>, <span style="color: #2aa198;">"Twelve Monkeys"</span>, <span style="color: #2aa198;">"Jeffrey Goines"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Ethan Hawke"</span>, <span style="color: #2aa198;">"Gattaca"</span>, <span style="color: #2aa198;">"Vincent Freeman"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Uma Thurman"</span>, <span style="color: #2aa198;">"Gattaca"</span>, <span style="color: #2aa198;">"Irene Cassini"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Steve Buscemi"</span>, <span style="color: #2aa198;">"Reservoir Dogs"</span>, <span style="color: #2aa198;">"Mr Pink"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Harrison Ford"</span>, <span style="color: #2aa198;">"Raiders of the Lost Ark"</span>, <span style="color: #2aa198;">"Indiana Jones"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"John Rhys-Davies"</span>, <span style="color: #2aa198;">"Raiders of the Lost Ark"</span>, <span style="color: #2aa198;">"Sallah"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Karen Allen"</span>, <span style="color: #2aa198;">"Raiders of the Lost Ark"</span>, <span style="color: #2aa198;">"Marion Ravenwood"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Harrison Ford"</span>, <span style="color: #2aa198;">"The Fugitive"</span>, <span style="color: #2aa198;">"Richard Kimble"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Tommy Lee Jones"</span>, <span style="color: #2aa198;">"The Fugitive"</span>, <span style="color: #2aa198;">"Samuel Gerard"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Jeroen Krabbe"</span>, <span style="color: #2aa198;">"The Fugitive"</span>, <span style="color: #2aa198;">"Charles Nichols"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Tommy Lee Jones"</span>, <span style="color: #2aa198;">"Men in Black"</span>, <span style="color: #2aa198;">"Kay"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Will Smith"</span>, <span style="color: #2aa198;">"Men in Black"</span>, <span style="color: #2aa198;">"Jay"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Linda Fiorentino"</span>, <span style="color: #2aa198;">"Men in Black"</span>, <span style="color: #2aa198;">"Laurel"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Kevin Costner"</span>, <span style="color: #2aa198;">"The Untouchables"</span>, <span style="color: #2aa198;">"Eliot Ness"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Sean Connery"</span>, <span style="color: #2aa198;">"The Untouchables"</span>, <span style="color: #2aa198;">"Jim Malone"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Andy Garcia"</span>, <span style="color: #2aa198;">"The Untouchables"</span>, <span style="color: #2aa198;">"George Stone"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Robert De Niro"</span>, <span style="color: #2aa198;">"The Untouchables"</span>, <span style="color: #2aa198;">"Al Capone"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Kate Winslet"</span>, <span style="color: #2aa198;">"Titanic"</span>, <span style="color: #2aa198;">"Rose DeWit Bukater"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Christopher Lambert"</span>,<span style="color: #2aa198;">"Highlander"</span>, <span style="color: #2aa198;">"Connor MacLeod"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Sean Connery"</span>, <span style="color: #2aa198;">"Highlander"</span>, <span style="color: #2aa198;">"Ramirez"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Marlon Brando"</span>, <span style="color: #2aa198;">"Apocalypse Now"</span>, <span style="color: #2aa198;">"Colonel Kurtz"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Robert Duvall"</span>, <span style="color: #2aa198;">"Apocalypse Now"</span>, <span style="color: #2aa198;">"Lieutenant Kilgore"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Martin Sheen"</span>, <span style="color: #2aa198;">"Apocalypse Now"</span>, <span style="color: #2aa198;">"Captain Willard"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Michael Douglas"</span>, <span style="color: #2aa198;">"Wall Street"</span>, <span style="color: #2aa198;">"Gordon Gekko"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Charlie Sheen"</span>, <span style="color: #2aa198;">"Wall Street"</span>, <span style="color: #2aa198;">"Bud Fox"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Martin Sheen"</span>, <span style="color: #2aa198;">"Wall Street"</span>, <span style="color: #2aa198;">"Carl Fox"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Charlie Sheen"</span>, <span style="color: #2aa198;">"Platoon"</span>, <span style="color: #2aa198;">"Chris"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Forest Whitaker"</span>, <span style="color: #2aa198;">"Platoon"</span>, <span style="color: #2aa198;">"Big Haplayd"</span><span style="color: #b58900;">]</span>,
+  <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #2aa198;">"Tom Berenger"</span>, <span style="color: #2aa198;">"Platoon"</span>, <span style="color: #2aa198;">"Sgt. Barnes"</span><span style="color: #b58900;">]</span>
+  <span style="color: #f5deb3;">]</span>
+</pre>
+</div>
+
+<p>
+Database objects defined in terms of list comprehensions:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #268bd2;">characters</span> <span style="color: #268bd2;">=</span> nub <span style="color: #f5deb3;">[</span>x <span style="color: #268bd2;">|</span> <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, <span style="color: #859900; font-weight: bold;">_</span>, <span style="color: #859900; font-weight: bold;">_</span>, x<span style="color: #b58900;">]</span> <span style="color: #268bd2;">&lt;-</span> db<span style="color: #f5deb3;">]</span>
+<span style="color: #268bd2;">movies</span>     <span style="color: #268bd2;">=</span>     <span style="color: #f5deb3;">[</span>x <span style="color: #268bd2;">|</span> <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, x, <span style="color: #859900; font-weight: bold;">_</span><span style="color: #b58900;">]</span> <span style="color: #268bd2;">&lt;-</span> db<span style="color: #f5deb3;">]</span>
+<span style="color: #268bd2;">actors</span>     <span style="color: #268bd2;">=</span> nub <span style="color: #f5deb3;">[</span>x <span style="color: #268bd2;">|</span> <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, x, <span style="color: #859900; font-weight: bold;">_</span>, <span style="color: #859900; font-weight: bold;">_</span><span style="color: #b58900;">]</span> <span style="color: #268bd2;">&lt;-</span> db<span style="color: #f5deb3;">]</span>
+<span style="color: #268bd2;">directors</span>  <span style="color: #268bd2;">=</span> nub <span style="color: #f5deb3;">[</span>x <span style="color: #268bd2;">|</span> <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, x, <span style="color: #859900; font-weight: bold;">_</span><span style="color: #b58900;">]</span> <span style="color: #268bd2;">&lt;-</span> db<span style="color: #f5deb3;">]</span>
+<span style="color: #268bd2;">dates</span>      <span style="color: #268bd2;">=</span> nub <span style="color: #f5deb3;">[</span>x <span style="color: #268bd2;">|</span> <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, <span style="color: #859900; font-weight: bold;">_</span>, x<span style="color: #b58900;">]</span> <span style="color: #268bd2;">&lt;-</span> db<span style="color: #f5deb3;">]</span>
+<span style="color: #268bd2;">universe</span>   <span style="color: #268bd2;">=</span> nub <span style="color: #f5deb3;">(</span>characters <span style="color: #268bd2;">++</span> actors <span style="color: #268bd2;">++</span> directors <span style="color: #268bd2;">++</span> movies <span style="color: #268bd2;">++</span> dates<span style="color: #f5deb3;">)</span>
+</pre>
+</div>
+
+<p>
+Define lists of tuples:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #268bd2;">direct</span>     <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">[</span><span style="color: #b58900;">(</span>x, y<span style="color: #b58900;">)</span> <span style="color: #268bd2;">|</span> <span style="color: #b58900;">[</span><span style="color: #2aa198;">"direct"</span>, x, y<span style="color: #b58900;">]</span> <span style="color: #268bd2;">&lt;-</span> db<span style="color: #f5deb3;">]</span>
+<span style="color: #268bd2;">act</span>        <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">[</span><span style="color: #b58900;">(</span>x, y<span style="color: #b58900;">)</span> <span style="color: #268bd2;">|</span> <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, x, y, <span style="color: #859900; font-weight: bold;">_</span><span style="color: #b58900;">]</span> <span style="color: #268bd2;">&lt;-</span> db<span style="color: #f5deb3;">]</span>
+<span style="color: #268bd2;">play</span>       <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">[</span><span style="color: #b58900;">(</span>x, y, z<span style="color: #b58900;">)</span> <span style="color: #268bd2;">|</span> <span style="color: #b58900;">[</span><span style="color: #2aa198;">"play"</span>, x, y, z<span style="color: #b58900;">]</span> <span style="color: #268bd2;">&lt;-</span> db<span style="color: #f5deb3;">]</span>
+<span style="color: #268bd2;">release</span>    <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">[</span><span style="color: #b58900;">(</span>x, y<span style="color: #b58900;">)</span> <span style="color: #268bd2;">|</span> <span style="color: #b58900;">[</span><span style="color: #2aa198;">"release"</span>, x, y<span style="color: #b58900;">]</span> <span style="color: #268bd2;">&lt;-</span> db<span style="color: #f5deb3;">]</span>
+</pre>
+</div>
+
+<p>
+Predicates
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #268bd2;">charP</span>     <span style="color: #268bd2;">=</span> <span style="color: #268bd2;">\</span> x <span style="color: #268bd2;">-&gt;</span> elem x characters
+<span style="color: #268bd2;">actorP</span>    <span style="color: #268bd2;">=</span> <span style="color: #268bd2;">\</span> x <span style="color: #268bd2;">-&gt;</span> elem x actors
+<span style="color: #268bd2;">movieP</span>    <span style="color: #268bd2;">=</span> <span style="color: #268bd2;">\</span> x <span style="color: #268bd2;">-&gt;</span> elem x movies
+<span style="color: #268bd2;">directorP</span> <span style="color: #268bd2;">=</span> <span style="color: #268bd2;">\</span> x <span style="color: #268bd2;">-&gt;</span> elem x directors
+<span style="color: #268bd2;">dateP</span>     <span style="color: #268bd2;">=</span> <span style="color: #268bd2;">\</span> x <span style="color: #268bd2;">-&gt;</span> elem x dates
+<span style="color: #268bd2;">actP</span>      <span style="color: #268bd2;">=</span> <span style="color: #268bd2;">\</span> <span style="color: #f5deb3;">(</span>x, y<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">-&gt;</span> elem <span style="color: #f5deb3;">(</span>x, y<span style="color: #f5deb3;">)</span> act
+<span style="color: #268bd2;">releaseP</span>  <span style="color: #268bd2;">=</span> <span style="color: #268bd2;">\</span> <span style="color: #f5deb3;">(</span>x, y<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">-&gt;</span> elem <span style="color: #f5deb3;">(</span>x, y<span style="color: #f5deb3;">)</span> release
+<span style="color: #268bd2;">directP</span>   <span style="color: #268bd2;">=</span> <span style="color: #268bd2;">\</span> <span style="color: #f5deb3;">(</span>x, y<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">-&gt;</span> elem <span style="color: #f5deb3;">(</span>x, y<span style="color: #f5deb3;">)</span> direct
+<span style="color: #268bd2;">playP</span>     <span style="color: #268bd2;">=</span> <span style="color: #268bd2;">\</span> <span style="color: #f5deb3;">(</span>x, y, z<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">-&gt;</span> elem <span style="color: #f5deb3;">(</span>x, y, z<span style="color: #f5deb3;">)</span> play
+</pre>
+</div>
+
+<p>
+Now, a query:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #268bd2;">actorsThatAreDirectors</span> <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">[</span>x <span style="color: #268bd2;">|</span> x <span style="color: #268bd2;">&lt;-</span> actors, directorP x<span style="color: #f5deb3;">]</span>
+<span style="color: #268bd2;">withActedFilms</span> <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">[</span><span style="color: #b58900;">(</span>x, y<span style="color: #b58900;">)</span> <span style="color: #268bd2;">|</span> <span style="color: #b58900;">(</span>x, y<span style="color: #b58900;">)</span> <span style="color: #268bd2;">&lt;-</span> act, directorP x<span style="color: #f5deb3;">]</span>
+</pre>
+</div>
+
+<p>
+This query, because the given =y=s are not related, will generate an infinite list.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #268bd2;">directorsFilmsReleaseDate</span> <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">[</span><span style="color: #b58900;">(</span>x, y, z<span style="color: #b58900;">)</span> <span style="color: #268bd2;">|</span> <span style="color: #b58900;">(</span>x, y<span style="color: #b58900;">)</span> <span style="color: #268bd2;">&lt;-</span> direct, <span style="color: #b58900;">(</span>y, z<span style="color: #b58900;">)</span> <span style="color: #268bd2;">&lt;-</span> release<span style="color: #f5deb3;">]</span>
+</pre>
+</div>
+
+<p>
+Fix with an equality predicate:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #268bd2;">directorsFilmsReleaseDate'</span> <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">[</span><span style="color: #b58900;">(</span>x, y, z<span style="color: #b58900;">)</span> <span style="color: #268bd2;">|</span> <span style="color: #b58900;">(</span>x, y<span style="color: #b58900;">)</span> <span style="color: #268bd2;">&lt;-</span> direct, <span style="color: #b58900;">(</span>u, z<span style="color: #b58900;">)</span> <span style="color: #268bd2;">&lt;-</span> release, y <span style="color: #268bd2;">==</span> u<span style="color: #f5deb3;">]</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #268bd2;">all1995Directors</span> <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">[</span><span style="color: #b58900;">(</span>x, y<span style="color: #b58900;">)</span> <span style="color: #268bd2;">|</span> <span style="color: #b58900;">(</span>x, y<span style="color: #b58900;">)</span> <span style="color: #268bd2;">&lt;-</span> direct, <span style="color: #b58900;">(</span>u, <span style="color: #2aa198;">"1995"</span><span style="color: #b58900;">)</span> <span style="color: #268bd2;">&lt;-</span> release, y <span style="color: #268bd2;">==</span> u<span style="color: #f5deb3;">]</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #268bd2;">directorsAfter1995</span> <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">[</span><span style="color: #b58900;">(</span>x, y, z<span style="color: #b58900;">)</span> <span style="color: #268bd2;">|</span> <span style="color: #b58900;">(</span>x, y<span style="color: #b58900;">)</span> <span style="color: #268bd2;">&lt;-</span> direct, <span style="color: #b58900;">(</span>u, z<span style="color: #b58900;">)</span> <span style="color: #268bd2;">&lt;-</span> release, y <span style="color: #268bd2;">==</span> u, z <span style="color: #268bd2;">&gt;</span> <span style="color: #2aa198;">"1995"</span><span style="color: #f5deb3;">]</span>
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3">A Data Type for Sets</h3>
+<div class="outline-text-3" id="text-2-3">
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #859900; font-weight: bold;">module</span> <span style="color: #b58900;">SetEq</span>
+    <span style="color: #f5deb3;">(</span> <span style="color: #b58900;">Set</span><span style="color: #b58900;">(</span><span style="color: #268bd2;">..</span><span style="color: #b58900;">)</span>, emptySet, isEmpty, inSet, subSet, insertSet, deleteSet, powerSet, takeSet, list2set, <span style="color: #b58900;">(</span><span style="color: #268bd2;">!!!</span><span style="color: #b58900;">)</span>
+    <span style="color: #f5deb3;">)</span> <span style="color: #859900; font-weight: bold;">where</span>
+
+<span style="color: #859900; font-weight: bold;">import</span> <span style="color: #b58900;">Data.List</span> <span style="color: #f5deb3;">(</span>delete<span style="color: #f5deb3;">)</span>
+
+<span style="color: #859900; font-weight: bold;">infixl</span> 9 <span style="color: #268bd2;">!!!</span>
+
+<span style="color: #859900; font-weight: bold;">newtype</span> <span style="color: #b58900;">Set</span> a <span style="color: #268bd2;">=</span> <span style="color: #b58900;">Set</span> <span style="color: #f5deb3;">[</span>a<span style="color: #f5deb3;">]</span>
+
+<span style="color: #859900; font-weight: bold;">instance</span> <span style="color: #b58900;">Eq</span> a <span style="color: #268bd2;">=&gt;</span> <span style="color: #b58900;">Eq</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> a<span style="color: #f5deb3;">)</span> <span style="color: #859900; font-weight: bold;">where</span>
+  set1 <span style="color: #268bd2;">==</span> set2 <span style="color: #268bd2;">=</span> subSet set1 set2 <span style="color: #268bd2;">&amp;&amp;</span> subSet set2 set1
+
+<span style="color: #859900; font-weight: bold;">instance</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Show</span> a<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=&gt;</span> <span style="color: #b58900;">Show</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> a<span style="color: #f5deb3;">)</span> <span style="color: #859900; font-weight: bold;">where</span>
+  showsPrec <span style="color: #859900; font-weight: bold;">_</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> s<span style="color: #f5deb3;">)</span> str <span style="color: #268bd2;">=</span> showSet s str
+
+<span style="color: #268bd2;">showSet</span> <span style="color: #f5deb3;">[]</span>     str <span style="color: #268bd2;">=</span> showString <span style="color: #2aa198;">"{}"</span> str
+<span style="color: #268bd2;">showSet</span> <span style="color: #f5deb3;">(</span>x<span style="color: #b58900;">:</span>xs<span style="color: #f5deb3;">)</span> str <span style="color: #268bd2;">=</span> showChar <span style="color: #2aa198;">'{'</span> <span style="color: #f5deb3;">(</span>shows x <span style="color: #b58900;">(</span>show1 xs str<span style="color: #b58900;">)</span><span style="color: #f5deb3;">)</span>
+  <span style="color: #859900; font-weight: bold;">where</span> show1 <span style="color: #f5deb3;">[]</span>     str <span style="color: #268bd2;">=</span> showChar <span style="color: #2aa198;">'}'</span> str
+        show1 <span style="color: #f5deb3;">(</span>x<span style="color: #b58900;">:</span>xs<span style="color: #f5deb3;">)</span> str <span style="color: #268bd2;">=</span> showChar <span style="color: #2aa198;">','</span> <span style="color: #f5deb3;">(</span>shows x <span style="color: #b58900;">(</span>show1 xs str<span style="color: #b58900;">)</span><span style="color: #f5deb3;">)</span>
+
+<span style="color: #268bd2;">emptySet</span> <span style="color: #268bd2;">::</span> <span style="color: #b58900;">Set</span> a
+<span style="color: #268bd2;">emptySet</span> <span style="color: #268bd2;">=</span> <span style="color: #b58900;">Set</span> <span style="color: #f5deb3;">[]</span>
+
+<span style="color: #268bd2;">isEmpty</span> <span style="color: #268bd2;">::</span> <span style="color: #b58900;">Set</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Bool</span>
+<span style="color: #268bd2;">isEmpty</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> <span style="color: #b58900;">[]</span><span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=</span> <span style="color: #b58900;">True</span>
+<span style="color: #268bd2;">isEmpty</span> <span style="color: #859900; font-weight: bold;">_</span>        <span style="color: #268bd2;">=</span> <span style="color: #b58900;">False</span>
+
+<span style="color: #268bd2;">inSet</span> <span style="color: #268bd2;">::</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Eq</span> a<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=&gt;</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Set</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Bool</span>
+<span style="color: #268bd2;">inSet</span> x <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> s<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=</span> elem x s
+
+<span style="color: #268bd2;">subSet</span> <span style="color: #268bd2;">::</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Eq</span> a<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=&gt;</span> <span style="color: #b58900;">Set</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Set</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Bool</span>
+<span style="color: #268bd2;">subSet</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> <span style="color: #b58900;">[]</span><span style="color: #f5deb3;">)</span>     <span style="color: #859900; font-weight: bold;">_</span>   <span style="color: #268bd2;">=</span> <span style="color: #b58900;">True</span>
+<span style="color: #268bd2;">subSet</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> <span style="color: #b58900;">(</span>x<span style="color: #b58900;">:</span>xs<span style="color: #b58900;">)</span><span style="color: #f5deb3;">)</span> set <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">(</span>inSet x set<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">&amp;&amp;</span> subSet <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> xs<span style="color: #f5deb3;">)</span> set
+
+<span style="color: #268bd2;">insertSet</span> <span style="color: #268bd2;">::</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Eq</span> a<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=&gt;</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Set</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Set</span> a
+<span style="color: #268bd2;">insertSet</span> x <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> ys<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">|</span> inSet x <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> ys<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=</span> <span style="color: #b58900;">Set</span> ys
+                     <span style="color: #268bd2;">|</span> otherwise        <span style="color: #268bd2;">=</span> <span style="color: #b58900;">Set</span> <span style="color: #f5deb3;">(</span>x<span style="color: #b58900;">:</span>ys<span style="color: #f5deb3;">)</span>
+
+<span style="color: #268bd2;">deleteSet</span> <span style="color: #268bd2;">::</span> <span style="color: #b58900;">Eq</span> a <span style="color: #268bd2;">=&gt;</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Set</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Set</span> a
+<span style="color: #268bd2;">deleteSet</span> x <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> xs<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=</span> <span style="color: #b58900;">Set</span> <span style="color: #f5deb3;">(</span>delete x xs<span style="color: #f5deb3;">)</span>
+
+<span style="color: #268bd2;">list2set</span> <span style="color: #268bd2;">::</span> <span style="color: #b58900;">Eq</span> a <span style="color: #268bd2;">=&gt;</span> <span style="color: #f5deb3;">[</span>a<span style="color: #f5deb3;">]</span> <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Set</span> a
+<span style="color: #268bd2;">list2set</span> <span style="color: #f5deb3;">[]</span>     <span style="color: #268bd2;">=</span> <span style="color: #b58900;">Set</span> <span style="color: #f5deb3;">[]</span>
+<span style="color: #268bd2;">list2set</span> <span style="color: #f5deb3;">(</span>x<span style="color: #b58900;">:</span>xs<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=</span> insertSet x <span style="color: #f5deb3;">(</span>list2set xs<span style="color: #f5deb3;">)</span>
+
+<span style="color: #268bd2;">powerSet</span> <span style="color: #268bd2;">::</span> <span style="color: #b58900;">Eq</span> a <span style="color: #268bd2;">=&gt;</span> <span style="color: #b58900;">Set</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Set</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> a<span style="color: #f5deb3;">)</span>
+<span style="color: #268bd2;">powerSet</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> xs<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=</span> <span style="color: #b58900;">Set</span> <span style="color: #f5deb3;">(</span>map <span style="color: #b58900;">(</span><span style="color: #268bd2;">\</span>xs <span style="color: #268bd2;">-&gt;</span> <span style="color: #268bd2;">(</span><span style="color: #b58900;">Set</span> xs<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span> <span style="color: #b58900;">(</span>powerList xs<span style="color: #b58900;">)</span><span style="color: #f5deb3;">)</span>
+
+<span style="color: #268bd2;">powerList</span> <span style="color: #268bd2;">::</span> <span style="color: #f5deb3;">[</span>a<span style="color: #f5deb3;">]</span> <span style="color: #268bd2;">-&gt;</span> <span style="color: #f5deb3;">[</span><span style="color: #b58900;">[</span>a<span style="color: #b58900;">]</span><span style="color: #f5deb3;">]</span>
+<span style="color: #268bd2;">powerList</span> <span style="color: #f5deb3;">[]</span> <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">[</span><span style="color: #b58900;">[]</span><span style="color: #f5deb3;">]</span>
+<span style="color: #268bd2;">powerList</span> <span style="color: #f5deb3;">(</span>x<span style="color: #b58900;">:</span>xs<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">(</span>powerList xs<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">++</span> <span style="color: #f5deb3;">(</span>map <span style="color: #b58900;">(</span>x<span style="color: #b58900;">:</span><span style="color: #b58900;">)</span> <span style="color: #b58900;">(</span>powerList xs<span style="color: #b58900;">)</span><span style="color: #f5deb3;">)</span>
+
+<span style="color: #268bd2;">takeSet</span> <span style="color: #268bd2;">::</span> <span style="color: #b58900;">Eq</span> a <span style="color: #268bd2;">=&gt;</span> <span style="color: #b58900;">Int</span> <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Set</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Set</span> a
+<span style="color: #268bd2;">takeSet</span> n <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> xs<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=</span> <span style="color: #b58900;">Set</span> <span style="color: #f5deb3;">(</span>take n xs<span style="color: #f5deb3;">)</span>
+</pre>
+</div>
+
+<p>
+<code>(!!!)</code> is analogous to List's <code>(!!)</code> operator for zero-based subscript look-up.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #f5deb3;">(</span><span style="color: #268bd2;">!!!</span><span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">::</span> <span style="color: #b58900;">Eq</span> a <span style="color: #268bd2;">=&gt;</span> <span style="color: #b58900;">Set</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Int</span> <span style="color: #268bd2;">-&gt;</span> a
+<span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> xs<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">!!!</span> n <span style="color: #268bd2;">=</span> xs <span style="color: #268bd2;">!!</span> n
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-2-3-1" class="outline-4">
+<h4 id="sec-2-3-1"><span class="todo TODO">TODO</span> Review and Note the different ways to declare types in Haskell</h4>
+<div class="outline-text-4" id="text-2-3-1">
+</div><ul class="org-ul"><li><a id="sec-2-3-1-1" name="sec-2-3-1-1"></a>type<br ></li>
+<li><a id="sec-2-3-1-2" name="sec-2-3-1-2"></a>newtype<br ></li>
+<li><a id="sec-2-3-1-3" name="sec-2-3-1-3"></a>data<br ></li></ul>
+</div>
+</div>
+
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4">Set Equality</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+Now we can compare Sets ignoring order:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #b58900;">Set</span> <span style="color: #f5deb3;">[</span>2, 3, 1<span style="color: #f5deb3;">]</span> <span style="color: #268bd2;">==</span> <span style="color: #b58900;">Set</span> <span style="color: #f5deb3;">[</span>1, 2, 3<span style="color: #f5deb3;">]</span>   <span style="color: #586e75;">-- </span><span style="color: #586e75;">True</span>
+</pre>
+</div>
+
+<p>
+The <code>Eq</code> <code>instance</code> declaration declares equality in terms of sub-sets:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #859900; font-weight: bold;">instance</span> <span style="color: #b58900;">Eq</span> a <span style="color: #268bd2;">=&gt;</span> <span style="color: #b58900;">Eq</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> a<span style="color: #f5deb3;">)</span> <span style="color: #859900; font-weight: bold;">where</span>
+  set1 <span style="color: #268bd2;">==</span> set2 <span style="color: #268bd2;">=</span> subSet set1 set2 <span style="color: #268bd2;">&amp;&amp;</span> subSet set2 set1
+</pre>
+</div>
+
+<p>
+So, two sets are equal iff they are subsets of one another.
+</p>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

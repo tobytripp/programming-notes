@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>ch5</title>
+<!-- 2015-02-23 Mon 20:15 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Tobias Tripp" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js"></script>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="wrapper">
+<h1 class="title">ch5</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. Chapter 5: Relations</a>
+<ul>
+<li><a href="#sec-1-1">1.1. Properties of Relations</a></li>
+<li><a href="#sec-1-2">1.2. Relations as Sets of Pairs</a></li>
+<li><a href="#sec-1-3">1.3. Implementing Relations as Functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Chapter 5: Relations</h2>
+<div class="outline-text-2" id="text-1">
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #859900; font-weight: bold;">module</span> <span style="color: #b58900;">CH5</span> <span style="color: #859900; font-weight: bold;">where</span>
+
+<span style="color: #859900; font-weight: bold;">import</span> <span style="color: #b58900;">Data.List</span>
+<span style="color: #859900; font-weight: bold;">import</span> <span style="color: #b58900;">SetOrd</span>
+</pre>
+</div>
+
+<p>
+A <i>relation</i> is a Set of ordered pairs.
+</p>
+
+<p>
+\((x,y) \in R\)   where <i>R</i> is a relation.
+</p>
+
+<p>
+Usually annotated as <i>xRy</i>, <i>R(x,y)</i>, or <i>Rxy</i>.
+</p>
+
+<p>
+The set consisting of all first coordinates of pairs in <i>R</i>, is
+called the <i>domain</i> of <i>R</i>:
+</p>
+\begin{equation}
+dom(R) = \left\{ x \vert \exists y (xRy) \right\}
+\end{equation}
+
+
+<p>
+The <i>range</i> is given by:
+</p>
+\begin{equation}
+ran(R) = \left\{ y \vert \exists x (xRy) \right\}
+\end{equation}
+
+<p>
+The <i>identity</i> relation on <i>A</i>:
+</p>
+\begin{equation}
+\Delta_{A} = \left\{ (a,b) \in A^2 |  a = b \right\} = \left\{ (a,a) \vert \in A \right\}
+\end{equation}
+
+<p>
+Given a relation, <i>R</i>, between <i>A</i> and <i>B</i>, the <i>inverse</i> of <i>R</i> is:
+</p>
+\begin{equation}
+R^{-1} = \left\{ (b,a) | aRb \right\}
+\end{equation}
+</div>
+
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> Properties of Relations</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+A relation <i>R</i> is <b>reflexive</b> on <i>A</i> if for every \(x \in A: xRx\).
+</p>
+
+<p>
+A relation <i>R</i> on <i>A</i> is <b>irreflexive</b> if for no \(x \in A: xRx\).
+For example, the relation &lt; on \(\mathbb{N}\) is irreflexive.
+</p>
+
+<p>
+A relation <i>R</i> on <i>A</i> is <b>symmetric</b> if for all \(x,y \in A\): if \(xRy\) then \(yRx\).
+</p>
+
+<p>
+A relation <i>R</i> on <i>A</i> is <b>asymmetric</b> if for all \(x,y \in A\): if \(xRy\) then not \(yRx\).
+The relation &lt; on \(\mathbb{N}\) is asymmetric.
+</p>
+
+<p>
+A relation <i>R</i> on <i>A</i> is asymmetric iff \(R \cap R^{-1} = \emptyset\)
+</p>
+
+<p>
+A relation <i>R</i> on <i>A</i> is <b>antisymmetric</b> if for all \(x,y \in A\): if \(xRy\) and \(yRx\) then \(x = y\).
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">reflexivity</td>
+<td class="left">\(\forall x   ~ xRx\)</td>
+</tr>
+
+<tr>
+<td class="left">irreflexivity</td>
+<td class="left">\(\forall x   ~ \neg xRx\)</td>
+</tr>
+
+<tr>
+<td class="left">symmetry</td>
+<td class="left">\(\forall xy  ~ (xRy \Rightarrow yRx)\)</td>
+</tr>
+
+<tr>
+<td class="left">asymmetry</td>
+<td class="left">\(\forall xy  ~ (xRy \Rightarrow \neg yRx)\)</td>
+</tr>
+
+<tr>
+<td class="left">antisymmetry</td>
+<td class="left">\(\forall xy  ~ (xRy \land yRx \Rightarrow x = y)\)</td>
+</tr>
+
+<tr>
+<td class="left">transitivity</td>
+<td class="left">\(\forall xyz ~ (xRy \land yRz \Rightarrow xRz)\)</td>
+</tr>
+
+<tr>
+<td class="left">intransitivity</td>
+<td class="left">\(\forall xyz ~ (xRy \land yRz \Rightarrow \neg xRz\)</td>
+</tr>
+
+<tr>
+<td class="left">linearity</td>
+<td class="left">\(\forall xy  ~ (xRy \lor yRx \lor x = y)\)</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+A relation <i>R</i> on <i>A</i> is <b>pre-order</b> if <i>R</i> is transitive and reflexive.
+</p>
+
+<p>
+A relation <i>R</i> on <i>A</i> is <b>strict partial order</b> if <i>R</i> is transitive and irreflexive.
+A relation <i>R</i> on <i>A</i> is <b>partial order</b> if <i>R</i> is transitive, reflexive, and antisymmetric.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> Relations as Sets of Pairs</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+<code>ys@(y:ys')</code> allows <code>ys</code> to refer to the non-empty list (y:ys').
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #859900; font-weight: bold;">module</span> <span style="color: #b58900;">SetOrd</span>
+    <span style="color: #f5deb3;">(</span> <span style="color: #b58900;">Set</span><span style="color: #b58900;">(</span><span style="color: #268bd2;">..</span><span style="color: #b58900;">)</span>, emptySet, isEmpty, inSet, subSet, insertSet, deleteSet, powerSet, takeSet, <span style="color: #b58900;">(</span><span style="color: #268bd2;">!!!</span><span style="color: #b58900;">)</span>, list2set, unionSet
+    <span style="color: #f5deb3;">)</span> <span style="color: #859900; font-weight: bold;">where</span>
+
+<span style="color: #859900; font-weight: bold;">import</span> <span style="color: #b58900;">Data.List</span> <span style="color: #f5deb3;">(</span>sort<span style="color: #f5deb3;">)</span>
+
+<span style="color: #586e75;">{-</span><span style="color: #586e75;">- Sets implemented as ordered lists without duplicates --}</span>
+
+<span style="color: #859900; font-weight: bold;">newtype</span> <span style="color: #b58900;">Set</span> a <span style="color: #268bd2;">=</span> <span style="color: #b58900;">Set</span> <span style="color: #f5deb3;">[</span>a<span style="color: #f5deb3;">]</span> <span style="color: #859900; font-weight: bold;">deriving</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Eq</span>, <span style="color: #b58900;">Ord</span><span style="color: #f5deb3;">)</span>
+
+<span style="color: #859900; font-weight: bold;">instance</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Show</span> a<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=&gt;</span> <span style="color: #b58900;">Show</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> a<span style="color: #f5deb3;">)</span> <span style="color: #859900; font-weight: bold;">where</span>
+  showsPrec <span style="color: #859900; font-weight: bold;">_</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> s<span style="color: #f5deb3;">)</span> str <span style="color: #268bd2;">=</span> showSet s str
+
+<span style="color: #268bd2;">showSet</span> <span style="color: #f5deb3;">[]</span> str <span style="color: #268bd2;">=</span> showString <span style="color: #2aa198;">"{}"</span> str
+<span style="color: #268bd2;">showSet</span> <span style="color: #f5deb3;">(</span>x<span style="color: #b58900;">:</span>xs<span style="color: #f5deb3;">)</span> str <span style="color: #268bd2;">=</span> showChar <span style="color: #2aa198;">'{'</span> <span style="color: #f5deb3;">(</span>shows x <span style="color: #b58900;">(</span>show1 xs str<span style="color: #b58900;">)</span><span style="color: #f5deb3;">)</span>
+  <span style="color: #859900; font-weight: bold;">where</span> show1 <span style="color: #f5deb3;">[]</span> str <span style="color: #268bd2;">=</span> showChar <span style="color: #2aa198;">'}'</span> str
+        show1 <span style="color: #f5deb3;">(</span>x<span style="color: #b58900;">:</span>xs<span style="color: #f5deb3;">)</span> str <span style="color: #268bd2;">=</span> showChar <span style="color: #2aa198;">','</span> <span style="color: #f5deb3;">(</span>shows x <span style="color: #b58900;">(</span>show1 xs str<span style="color: #b58900;">)</span><span style="color: #f5deb3;">)</span>
+
+<span style="color: #268bd2;">emptySet</span> <span style="color: #268bd2;">::</span> <span style="color: #b58900;">Set</span> a
+<span style="color: #268bd2;">emptySet</span> <span style="color: #268bd2;">=</span> <span style="color: #b58900;">Set</span> <span style="color: #f5deb3;">[]</span>
+
+<span style="color: #268bd2;">isEmpty</span> <span style="color: #268bd2;">::</span> <span style="color: #b58900;">Set</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Bool</span>
+<span style="color: #268bd2;">isEmpty</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> <span style="color: #b58900;">[]</span><span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=</span> <span style="color: #b58900;">True</span>
+<span style="color: #268bd2;">isEmpty</span> <span style="color: #859900; font-weight: bold;">_</span> <span style="color: #268bd2;">=</span> <span style="color: #b58900;">False</span>
+
+<span style="color: #268bd2;">inSet</span> <span style="color: #268bd2;">::</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Ord</span> a<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=&gt;</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Set</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Bool</span>
+<span style="color: #268bd2;">inSet</span> x <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> s<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=</span> elem x <span style="color: #f5deb3;">(</span>takeWhile <span style="color: #b58900;">(</span><span style="color: #268bd2;">&lt;=</span> x<span style="color: #b58900;">)</span> s<span style="color: #f5deb3;">)</span>
+
+<span style="color: #268bd2;">subSet</span> <span style="color: #268bd2;">::</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Ord</span> a<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=&gt;</span> <span style="color: #b58900;">Set</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Set</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Bool</span>
+<span style="color: #268bd2;">subSet</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> <span style="color: #b58900;">[]</span><span style="color: #f5deb3;">)</span> <span style="color: #859900; font-weight: bold;">_</span> <span style="color: #268bd2;">=</span> <span style="color: #b58900;">True</span>
+<span style="color: #268bd2;">subSet</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> <span style="color: #b58900;">(</span>x<span style="color: #b58900;">:</span>xs<span style="color: #b58900;">)</span><span style="color: #f5deb3;">)</span> set <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">(</span>inSet x set<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">&amp;&amp;</span> subSet <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> xs<span style="color: #f5deb3;">)</span> set
+
+<span style="color: #268bd2;">insertSet</span> <span style="color: #268bd2;">::</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Ord</span> a<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=&gt;</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Set</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Set</span> a
+<span style="color: #268bd2;">insertSet</span> x <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> s<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=</span> <span style="color: #b58900;">Set</span> <span style="color: #f5deb3;">(</span>insertList x s<span style="color: #f5deb3;">)</span>
+
+<span style="color: #268bd2;">insertList</span> x <span style="color: #f5deb3;">[]</span> <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">[</span>x<span style="color: #f5deb3;">]</span>
+<span style="color: #268bd2;">insertList</span> x ys<span style="color: #268bd2;">@</span> <span style="color: #f5deb3;">(</span>y<span style="color: #b58900;">:</span>ys'<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=</span> <span style="color: #859900; font-weight: bold;">case</span> compare x y <span style="color: #859900; font-weight: bold;">of</span>
+                            <span style="color: #b58900;">GT</span> <span style="color: #268bd2;">-&gt;</span> y <span style="color: #b58900;">:</span> insertList x ys'
+                            <span style="color: #b58900;">EQ</span> <span style="color: #268bd2;">-&gt;</span> ys
+                            <span style="color: #859900; font-weight: bold;">_</span> <span style="color: #268bd2;">-&gt;</span> x <span style="color: #b58900;">:</span> ys
+
+<span style="color: #268bd2;">deleteSet</span> <span style="color: #268bd2;">::</span> <span style="color: #b58900;">Ord</span> a <span style="color: #268bd2;">=&gt;</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Set</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Set</span> a
+<span style="color: #268bd2;">deleteSet</span> x <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> s<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=</span> <span style="color: #b58900;">Set</span> <span style="color: #f5deb3;">(</span>deleteList x s<span style="color: #f5deb3;">)</span>
+
+<span style="color: #268bd2;">deleteList</span> x <span style="color: #f5deb3;">[]</span> <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">[]</span>
+<span style="color: #268bd2;">deleteList</span> x ys<span style="color: #268bd2;">@</span> <span style="color: #f5deb3;">(</span>y<span style="color: #b58900;">:</span>ys'<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=</span> <span style="color: #859900; font-weight: bold;">case</span> compare x y <span style="color: #859900; font-weight: bold;">of</span>
+                            <span style="color: #b58900;">GT</span> <span style="color: #268bd2;">-&gt;</span> y <span style="color: #b58900;">:</span> deleteList x ys'
+                            <span style="color: #b58900;">EQ</span> <span style="color: #268bd2;">-&gt;</span> ys'
+                            <span style="color: #859900; font-weight: bold;">_</span> <span style="color: #268bd2;">-&gt;</span> ys
+
+<span style="color: #268bd2;">list2set</span> <span style="color: #268bd2;">::</span> <span style="color: #b58900;">Ord</span> a <span style="color: #268bd2;">=&gt;</span> <span style="color: #f5deb3;">[</span>a<span style="color: #f5deb3;">]</span> <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Set</span> a
+<span style="color: #268bd2;">list2set</span> <span style="color: #f5deb3;">[]</span> <span style="color: #268bd2;">=</span> <span style="color: #b58900;">Set</span> <span style="color: #f5deb3;">[]</span>
+<span style="color: #586e75;">-- </span><span style="color: #586e75;">list2set (x:xs) = insertSet x (list2set xs)</span>
+<span style="color: #268bd2;">list2set</span> xs <span style="color: #268bd2;">=</span> <span style="color: #b58900;">Set</span> <span style="color: #f5deb3;">(</span>foldr insertList <span style="color: #b58900;">[]</span> xs<span style="color: #f5deb3;">)</span>
+
+<span style="color: #268bd2;">powerSet</span> <span style="color: #268bd2;">::</span> <span style="color: #b58900;">Ord</span> a <span style="color: #268bd2;">=&gt;</span> <span style="color: #b58900;">Set</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Set</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> a<span style="color: #f5deb3;">)</span>
+<span style="color: #268bd2;">powerSet</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> xs<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=</span>
+  <span style="color: #b58900;">Set</span> <span style="color: #f5deb3;">(</span>sort <span style="color: #b58900;">(</span>map <span style="color: #268bd2;">(</span><span style="color: #268bd2;">\</span>xs <span style="color: #268bd2;">-&gt;</span> <span style="color: #dc322f;">(</span>list2set xs<span style="color: #dc322f;">)</span><span style="color: #268bd2;">)</span> <span style="color: #268bd2;">(</span>powerList xs<span style="color: #268bd2;">)</span><span style="color: #b58900;">)</span><span style="color: #f5deb3;">)</span>
+
+<span style="color: #268bd2;">powerList</span> <span style="color: #268bd2;">::</span> <span style="color: #f5deb3;">[</span>a<span style="color: #f5deb3;">]</span> <span style="color: #268bd2;">-&gt;</span> <span style="color: #f5deb3;">[</span><span style="color: #b58900;">[</span>a<span style="color: #b58900;">]</span><span style="color: #f5deb3;">]</span>
+<span style="color: #268bd2;">powerList</span> <span style="color: #f5deb3;">[]</span> <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">[</span><span style="color: #b58900;">[]</span><span style="color: #f5deb3;">]</span>
+<span style="color: #268bd2;">powerList</span> <span style="color: #f5deb3;">(</span>x<span style="color: #b58900;">:</span>xs<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">(</span>powerList xs<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">++</span> <span style="color: #f5deb3;">(</span>map <span style="color: #b58900;">(</span>x<span style="color: #b58900;">:</span><span style="color: #b58900;">)</span> <span style="color: #b58900;">(</span>powerList xs<span style="color: #b58900;">)</span><span style="color: #f5deb3;">)</span>
+
+<span style="color: #268bd2;">takeSet</span> <span style="color: #268bd2;">::</span> <span style="color: #b58900;">Eq</span> a <span style="color: #268bd2;">=&gt;</span> <span style="color: #b58900;">Int</span> <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Set</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Set</span> a
+<span style="color: #268bd2;">takeSet</span> n <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> xs<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=</span> <span style="color: #b58900;">Set</span> <span style="color: #f5deb3;">(</span>take n xs<span style="color: #f5deb3;">)</span>
+
+<span style="color: #859900; font-weight: bold;">infixl</span> 9 <span style="color: #268bd2;">!!!</span>
+<span style="color: #f5deb3;">(</span><span style="color: #268bd2;">!!!</span><span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">::</span> <span style="color: #b58900;">Eq</span> a <span style="color: #268bd2;">=&gt;</span> <span style="color: #b58900;">Set</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Int</span> <span style="color: #268bd2;">-&gt;</span> a
+<span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> xs<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">!!!</span> n <span style="color: #268bd2;">=</span> xs <span style="color: #268bd2;">!!</span> n
+
+<span style="color: #268bd2;">unionSet</span> <span style="color: #268bd2;">::</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Ord</span> a<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=&gt;</span> <span style="color: #b58900;">Set</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Set</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Set</span> a
+<span style="color: #268bd2;">unionSet</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> <span style="color: #b58900;">[]</span><span style="color: #f5deb3;">)</span> set2 <span style="color: #268bd2;">=</span> set2
+<span style="color: #268bd2;">unionSet</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> <span style="color: #b58900;">(</span>x<span style="color: #b58900;">:</span>xs<span style="color: #b58900;">)</span><span style="color: #f5deb3;">)</span> set2 <span style="color: #268bd2;">=</span> insertSet x <span style="color: #f5deb3;">(</span>unionSet <span style="color: #b58900;">(</span><span style="color: #b58900;">Set</span> xs<span style="color: #b58900;">)</span> set2<span style="color: #f5deb3;">)</span>
+</pre>
+</div>
+
+<p>
+Now we can define a type for Relations in terms of Ordered Sets:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #859900; font-weight: bold;">type</span> <span style="color: #b58900;">Rel</span> a <span style="color: #268bd2;">=</span> <span style="color: #b58900;">Set</span> <span style="color: #f5deb3;">(</span>a,a<span style="color: #f5deb3;">)</span>
+</pre>
+</div>
+
+<p>
+A Relation's domain:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #268bd2;">domR</span> <span style="color: #268bd2;">::</span> <span style="color: #b58900;">Ord</span> a <span style="color: #268bd2;">=&gt;</span> <span style="color: #b58900;">Rel</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Set</span> a
+<span style="color: #268bd2;">domR</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> r<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=</span> list2set <span style="color: #f5deb3;">[</span>x <span style="color: #268bd2;">|</span> <span style="color: #b58900;">(</span>x, <span style="color: #859900; font-weight: bold;">_</span><span style="color: #b58900;">)</span> <span style="color: #268bd2;">&lt;-</span> r<span style="color: #f5deb3;">]</span>
+</pre>
+</div>
+
+<p>
+and the range:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #268bd2;">ranR</span> <span style="color: #268bd2;">::</span> <span style="color: #b58900;">Ord</span> a <span style="color: #268bd2;">=&gt;</span> <span style="color: #b58900;">Rel</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Set</span> a
+<span style="color: #268bd2;">ranR</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> r<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=</span> list2set <span style="color: #f5deb3;">[</span>y <span style="color: #268bd2;">|</span> <span style="color: #b58900;">(</span><span style="color: #859900; font-weight: bold;">_</span>, y<span style="color: #b58900;">)</span> <span style="color: #268bd2;">&lt;-</span> r<span style="color: #f5deb3;">]</span>
+</pre>
+</div>
+
+<p>
+the identity relation \(\Delta_A\) over a set <i>A</i>:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #268bd2;">idR</span> <span style="color: #268bd2;">::</span> <span style="color: #b58900;">Ord</span> a <span style="color: #268bd2;">=&gt;</span> <span style="color: #b58900;">Set</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Rel</span> a
+<span style="color: #268bd2;">idR</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> xs<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=</span> <span style="color: #b58900;">Set</span> <span style="color: #f5deb3;">[</span><span style="color: #b58900;">(</span>x, x<span style="color: #b58900;">)</span> <span style="color: #268bd2;">|</span> x <span style="color: #268bd2;">&lt;-</span> xs<span style="color: #f5deb3;">]</span>
+</pre>
+</div>
+
+<p>
+A function to create an inverse Relation:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #268bd2;">invR</span> <span style="color: #268bd2;">::</span> <span style="color: #b58900;">Ord</span> a <span style="color: #268bd2;">=&gt;</span> <span style="color: #b58900;">Rel</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Rel</span> a
+<span style="color: #268bd2;">invR</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> <span style="color: #b58900;">[]</span><span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> <span style="color: #b58900;">[]</span><span style="color: #f5deb3;">)</span>
+<span style="color: #268bd2;">invR</span> <span style="color: #f5deb3;">(</span><span style="color: #b58900;">Set</span> <span style="color: #b58900;">(</span><span style="color: #268bd2;">(</span>x, y<span style="color: #268bd2;">)</span><span style="color: #b58900;">:</span>r<span style="color: #b58900;">)</span><span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">=</span> insertSet <span style="color: #f5deb3;">(</span>y, x<span style="color: #f5deb3;">)</span> <span style="color: #f5deb3;">(</span>invR <span style="color: #b58900;">(</span><span style="color: #b58900;">Set</span> r<span style="color: #b58900;">)</span><span style="color: #f5deb3;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> Implementing Relations as Functions</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+The property of dividing the number 102, giving the set:
+</p>
+\begin{equation}
+\left\{ d \in \mathbb{N}^{+} | ~ d \mbox{ divides } 102 \right\} = \left\{ 1, 2, 3, 6, 17, 34, 51, 102 \right\}
+\end{equation}
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #268bd2;">divides</span> <span style="color: #268bd2;">::</span> <span style="color: #b58900;">Integer</span> <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Integer</span> <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Bool</span>
+<span style="color: #268bd2;">divides</span> d n <span style="color: #268bd2;">|</span> d <span style="color: #268bd2;">==</span> 0 <span style="color: #268bd2;">=</span> error <span style="color: #2aa198;">"divides: zero divisor"</span>
+            <span style="color: #268bd2;">|</span> otherwise <span style="color: #268bd2;">=</span> <span style="color: #f5deb3;">(</span>rem n d<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">==</span> 0
+</pre>
+</div>
+
+<p>
+<code>(`divides` 102)</code> can be used as shorthand for <code>flip divides 102</code> where flip can be defined as:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #268bd2;">flip</span> <span style="color: #268bd2;">::</span> <span style="color: #f5deb3;">(</span>a <span style="color: #268bd2;">-&gt;</span> b <span style="color: #268bd2;">-&gt;</span> c<span style="color: #f5deb3;">)</span> <span style="color: #268bd2;">-&gt;</span> b <span style="color: #268bd2;">-&gt;</span> a <span style="color: #268bd2;">-&gt;</span> c
+<span style="color: #268bd2;">flip</span> f x y <span style="color: #268bd2;">=</span> f y x
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #268bd2;">filter</span> <span style="color: #f5deb3;">(</span><span style="color: #268bd2;">`divides`</span> 102<span style="color: #f5deb3;">)</span> <span style="color: #f5deb3;">[</span>1<span style="color: #268bd2;">..</span>300<span style="color: #f5deb3;">]</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #859900; font-weight: bold;">type</span> <span style="color: #b58900;">Rel'</span> a <span style="color: #268bd2;">=</span> a <span style="color: #268bd2;">-&gt;</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Bool</span>
+
+<span style="color: #268bd2;">emptyR'</span> <span style="color: #268bd2;">::</span> <span style="color: #b58900;">Rel'</span> a
+<span style="color: #268bd2;">emptyR'</span> <span style="color: #268bd2;">=</span> <span style="color: #268bd2;">\</span> <span style="color: #859900; font-weight: bold;">_</span> <span style="color: #859900; font-weight: bold;">_</span> <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">False</span>
+
+<span style="color: #268bd2;">list2rel'</span> <span style="color: #268bd2;">::</span> <span style="color: #b58900;">Eq</span> a <span style="color: #268bd2;">=&gt;</span> <span style="color: #f5deb3;">[</span><span style="color: #b58900;">(</span>a, a<span style="color: #b58900;">)</span><span style="color: #f5deb3;">]</span> <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Rel'</span> a
+<span style="color: #268bd2;">list2rel'</span> xys <span style="color: #268bd2;">=</span> <span style="color: #268bd2;">\</span> x y <span style="color: #268bd2;">-&gt;</span> elem <span style="color: #f5deb3;">(</span>x, y<span style="color: #f5deb3;">)</span> xys
+</pre>
+</div>
+
+<p>
+Composition:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #268bd2;">compR'</span> <span style="color: #268bd2;">::</span> <span style="color: #f5deb3;">[</span>a<span style="color: #f5deb3;">]</span> <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Rel'</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Rel'</span> a <span style="color: #268bd2;">-&gt;</span> <span style="color: #b58900;">Rel'</span> a
+<span style="color: #268bd2;">compR'</span> xs r s x y <span style="color: #268bd2;">=</span> or <span style="color: #f5deb3;">[</span>r x z <span style="color: #268bd2;">&amp;&amp;</span> s z y <span style="color: #268bd2;">|</span> z <span style="color: #268bd2;">&lt;-</span> xs<span style="color: #f5deb3;">]</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer id="postamble" class="status">
+<p class="author">Author: Tobias Tripp</p>
+<p class="date">Created: 2015-02-23 Mon 20:15</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</footer>
+</body>
+</html>

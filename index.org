@@ -9,7 +9,6 @@
 * Programming Notes
 :PROPERTIES:
 :HTML_CONTAINER: header
-:HTML_CONTAINER_CLASS: testing
 :END:
   Code and Notes on things that interested me at least once.
 
@@ -17,7 +16,7 @@
 <p class="view"><a href="https://github.com/tobytripp/programming-notes">View the Project on GitHub <small>tobytripp/programming-notes</small></a></p>
 #+END_HTML
 
-* [[file:book/index.org][The Haskell Road to Logic, Maths and Programming]]
+* [[file:books/haskell-math/README.org][The Haskell Road to Logic, Maths and Programming]]
 :PROPERTIES:
 :HTML_CONTAINER: section
 :END:

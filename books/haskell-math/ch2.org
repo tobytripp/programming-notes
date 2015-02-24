@@ -1,4 +1,13 @@
+#+SETUPFILE: ~/Code/Notes/main.orgsetup
 #+PROPERTY: tangle src/ch2.hs
+
+* Book Notes
+:PROPERTIES:
+:HTML_CONTAINER: header
+:END:
+
+  Notes taken while reading: _The Haskell Road to Logic, Maths and
+  Programming_ Second Edition, by Kees Doets and Jan van Eijck.
 
 * Chapter 2
   # Tangle with C-c C-x v t   (org-babel-tangle)

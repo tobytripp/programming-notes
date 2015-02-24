@@ -1,4 +1,4 @@
-#+SETUPFILE: ~/Code/Notes/main.orgsetup
+#+SETUPFILE: ./math.orgsetup
 #+PROPERTY: tangle src/ch2.hs
 
 * Book Notes

@@ -6,6 +6,8 @@
 
 # Theme by [[https://github.com/orderedlist][orderedlist]].
 
+# (org-publish-project "notes")
+
 * Programming Notes
 :PROPERTIES:
 :HTML_CONTAINER: header

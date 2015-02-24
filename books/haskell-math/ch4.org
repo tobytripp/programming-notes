@@ -1,5 +1,5 @@
 #+PROPERTY: tangle src/ch4.hs
-#+SETUPFILE: ~/Code/Notes/main.orgsetup
+#+SETUPFILE: ./math.orgsetup
 
 * Book Notes
 :PROPERTIES:

@@ -1,3 +1,4 @@
+#+SETUPFILE: ./math.orgsetup
 #+PROPERTY: tangle src/ch5.hs
 
 * Chapter 5: Relations

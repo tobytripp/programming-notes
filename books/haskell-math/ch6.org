@@ -5,12 +5,68 @@
 :PROPERTIES:
 :HTML_CONTAINER: section
 :END:
-  
+
   # Tangle with C-c C-x v t   (org-babel-tangle)
   #   or with F6
 
-  #+BEGIN_SRC haskell
+  # Toggle entity display with:
+  #   C-c C-x \
+  # Show available entities with:
+  #   M-x org-entity-help
+
+  #+BEGIN_SRC haskell :exports none
     module CH6 where
 
     import Data.List
   #+end_src
+
+  A function is a Relation that satisfies the following condition:
+
+  \begin{equation}
+  (x,y) \in f \land (x,z) \in f \Rightarrow y = z.
+  \end{equation}
+
+  i.e., for every $x \in dom(f)$ there is /exactly one/ $y \in ran(f)$ such that $(x,y) \in f$
+
+  $\left\{(1,4),(2,4),(2,6)\right\}$ is /not/ a function.
+
+  The relation \emptyset is a function. $dom(\emptyset) = \emptyset = ran(\emptyset)$.
+
+  Given Sets $X$ and $Y$, a function is $f$ from /X/ to /Y/
+  \begin{equation}
+  f : X \rightarrow Y
+  \end{equation}
+  if $dom(f) = X$ and $ran(f) \subseteq Y$.  In this situation, /Y/ is the /co-domain/ of $f$.
+
+** Recurrence vs. Closed Forms
+
+   For this *Recurrence*:
+
+   \begin{equation}
+   g(n) = \left\{
+   \begin{array}{1 1}
+     0            & \text{if } n = 0 \\
+     g(n - 1) + n & \text{if } n > 0
+   \end{array}
+     \right.
+   \end{equation}
+
+   #+BEGIN_SRC haskell
+     g 0 = 0
+     g n = g (n - 1) + n
+   #+END_SRC
+
+   A *Closed Form* definition is:
+
+   #+BEGIN_SRC haskell
+     g' n = ((n + 1) * n) / 2
+   #+END_SRC
+
+   #+BEGIN_SRC haskell
+     h 0 = 0
+     h n = h (n - 1) + (2*n)
+
+     k 0 = 0
+     k n = k (n - 1) + (2*n - 1)
+   #+END_SRC
+

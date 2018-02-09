@@ -9,3 +9,4 @@
 #+HTML_HEAD_EXTRA: <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 #+HTML_DOCTYPE: html5
 #+HTML_CONTAINER_CLASS: wrapper
+#+HTML_MATHJAX: align:"left" mathml:t path:"https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
